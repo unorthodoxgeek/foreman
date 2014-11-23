@@ -28,6 +28,9 @@ gem 'i18n', '~> 0.6.4'
 gem 'activerecord-session_store'
 gem 'protected_attributes' 
 
+## To be removed when updating to Rails 4.
+gem 'strong_parameters'
+
 Dir["#{File.dirname(FOREMAN_GEMFILE)}/bundler.d/*.rb"].each do |bundle|
   self.instance_eval(Bundler.read_file(bundle))
 end
