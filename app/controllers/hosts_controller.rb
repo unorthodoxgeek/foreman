@@ -78,7 +78,7 @@ class HostsController < ApplicationController
   end
 
   def create
-    @host = Host.new(params[:host])
+    @host = Host.new(foreman_params)
     @host.managed = true if (params[:host] && params[:host][:managed].nil?)
     forward_url_options
     if @host.save
@@ -97,7 +97,7 @@ class HostsController < ApplicationController
   def update
     forward_url_options
     Taxonomy.no_taxonomy_scope do
-      if @host.update_attributes(params[:host])
+      if @host.update_attributes(foreman_params)
         process_success :success_redirect => host_path(@host)
       else
         taxonomy_scope
