@@ -110,6 +110,11 @@ function onContentLoad(){
 
   var tz = jstz.determine();
   $.cookie('timezone', tz.name(), { path: '/' });
+
+  // Removes all the templates from forms as they can't be cleared by strong parameters.
+  $('form').on('submit', function(e) {
+    $('div[class*="_fields_template"]').remove();
+  });
 }
 
 function remove_fields(link) {
