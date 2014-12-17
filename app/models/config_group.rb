@@ -25,7 +25,7 @@ class ConfigGroup < ActiveRecord::Base
   alias_method :individual_puppetclasses, :puppetclasses
 
   def available_puppetclasses
-    Puppetclass.scoped
+    Puppetclass.all
   end
 
   # for auditing

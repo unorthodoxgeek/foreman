@@ -53,7 +53,7 @@ class FiltersController < ApplicationController
   def resource_base
     @resource_base ||= @role.present? ?
         @role.filters.authorized(current_permission) :
-        Filter.scoped.authorized(current_permission)
+        Filter.authorized(current_permission)
   end
 
   def role_id
