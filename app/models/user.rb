@@ -47,15 +47,15 @@ class User < ActiveRecord::Base
     includes(:cached_usergroups).
         where(["(#{self.table_name}.admin = ? OR #{self.table_name}.admin IS NULL) AND " +
                    "(#{Usergroup.table_name}.admin = ? OR #{Usergroup.table_name}.admin IS NULL)",
-               false, false])
+               false, false]).references(:users, :usergroups)
   }
   scope :only_admin, lambda {
     includes(:cached_usergroups).
-        where(["#{self.table_name}.admin = ? OR #{Usergroup.table_name}.admin = ?", true, true])
+        where(["#{self.table_name}.admin = ? OR #{Usergroup.table_name}.admin = ?", true, true]).references(:users, :usergroups)
   }
   scope :except_hidden, lambda {
-    if (hidden = AuthSourceHidden.all).present?
-      where("#{self.table_name}.auth_source_id <> ?", hidden)
+    if (hidden = AuthSourceHidden.all.select(:id)).present?
+      where("#{self.table_name}.auth_source_id <> (?)", hidden).references(:users)
     end
   }
   scope :visible,         lambda { except_hidden }
