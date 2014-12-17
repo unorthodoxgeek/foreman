@@ -176,7 +176,7 @@ module HostCommon
   end
 
   def available_puppetclasses
-    return Puppetclass.scoped if environment_id.blank?
+    return Puppetclass.all if environment_id.blank?
     environment.puppetclasses - parent_classes
   end
 
