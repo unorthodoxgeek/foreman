@@ -26,7 +26,6 @@ gem 'fast_gettext', '~> 0.8'
 gem 'gettext_i18n_rails', '~> 1.0'
 gem 'i18n', '~> 0.6.4'
 gem 'activerecord-session_store'
-gem 'protected_attributes'
 gem 'rails-observers', git: 'https://github.com/rails/rails-observers.git'
 
 Dir["#{File.dirname(FOREMAN_GEMFILE)}/bundler.d/*.rb"].each do |bundle|
