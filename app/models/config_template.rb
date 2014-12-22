@@ -1,7 +1,5 @@
 class ConfigTemplate < ActiveRecord::Base
   include Authorizable
-  extend FriendlyId
-  friendly_id :name
   include Taxonomix
   include Parameterizable::ByIdName
 

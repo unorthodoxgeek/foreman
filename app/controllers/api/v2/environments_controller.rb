@@ -38,7 +38,7 @@ module Api
       param_group :environment, :as => :create
 
       def create
-        @environment = Environment.new(params[:environment])
+        @environment = Environment.new(foreman_params)
         process_response @environment.save
       end
 
@@ -47,7 +47,7 @@ module Api
       param_group :environment
 
       def update
-        process_response @environment.update_attributes(params[:environment])
+        process_response @environment.update_attributes(foreman_params)
       end
 
       api :DELETE, "/environments/:id/", N_("Delete an environment")

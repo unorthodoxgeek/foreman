@@ -37,7 +37,7 @@ module Api
       param_group :realm, :as => :create
 
       def create
-        @realm = Realm.new(params[:realm])
+        @realm = Realm.new(foreman_params)
         process_response @realm.save
       end
 
@@ -46,7 +46,7 @@ module Api
       param_group :realm
 
       def update
-        process_response @realm.update_attributes(params[:realm])
+        process_response @realm.update_attributes(foreman_params)
       end
 
       api :DELETE, "/realms/:id/", N_("Delete a realm")

@@ -19,7 +19,7 @@ class UserRoleTest < ActiveSupport::TestCase
     cached_user_roles = user.cached_user_roles.map(&:role)
 
     user.roles.each do |role|
-      assert_include cached_user_roles, role
+      assert_includes cached_user_roles, role
     end
   end
 
@@ -29,8 +29,8 @@ class UserRoleTest < ActiveSupport::TestCase
     users = @semiadmin_users + [@admin_user] + [@superadmin_user]
     users.each do |user|
       cached_user_roles = user.cached_user_roles
-      assert_include cached_user_roles.map(&:role), user_role.role
-      assert_include cached_user_roles.map(&:user_role), user_role
+      assert_includes cached_user_roles.map(&:role), user_role.role
+      assert_includes cached_user_roles.map(&:user_role), user_role
     end
   end
 
@@ -42,7 +42,7 @@ class UserRoleTest < ActiveSupport::TestCase
 
     users = @semiadmin_users + [@admin_user] + [@superadmin_user]
     users.each  do |user|
-      assert_include user.cached_user_roles.map(&:role), new_role
+      assert_includes user.cached_user_roles.map(&:role), new_role
     end
   end
 
@@ -53,7 +53,7 @@ class UserRoleTest < ActiveSupport::TestCase
 
     users = [@admin_user, @superadmin_user]
     users.each do |user|
-     assert_include user.cached_user_roles.map(&:role), user_role.role
+     assert_includes user.cached_user_roles.map(&:role), user_role.role
     end
 
     users = @semiadmin_users

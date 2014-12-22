@@ -31,7 +31,7 @@ module Api
       param_group :usergroup, :as => :create
 
       def create
-        @usergroup = Usergroup.new(params[:usergroup])
+        @usergroup = Usergroup.new(foreman_params)
         process_response @usergroup.save
       end
 
@@ -40,7 +40,7 @@ module Api
       param_group :usergroup
 
       def update
-        process_response @usergroup.update_attributes(params[:usergroup])
+        process_response @usergroup.update_attributes(foreman_params)
       end
 
       api :DELETE, "/usergroups/:id/", N_("Delete a user group")
