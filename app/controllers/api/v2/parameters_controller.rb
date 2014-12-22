@@ -73,7 +73,7 @@ module Api
       param_group :parameter, :as => :create
 
       def create
-        @parameter = nested_obj.send(parameters_method).new(params[:parameter])
+        @parameter = nested_obj.send(parameters_method).new(foreman_params)
         @parameter.reference_id = nested_obj.id if Rails.version == '3.2.8' # hack to override 3.2.8 hack ensure_reference_nil on parameter.rb
         process_response @parameter.save
       end
@@ -94,7 +94,7 @@ module Api
       param_group :parameter
 
       def update
-        process_response @parameter.update_attributes(params[:parameter])
+        process_response @parameter.update_attributes(foreman_params)
       end
 
       api :DELETE, "/hosts/:host_id/parameters/:id", N_("Delete a nested parameter for a host")

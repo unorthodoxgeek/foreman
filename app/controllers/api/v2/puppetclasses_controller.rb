@@ -64,7 +64,7 @@ module Api
       param_group :puppetclass, :as => :create
 
       def create
-        @puppetclass = Puppetclass.new(params[:puppetclass])
+        @puppetclass = Puppetclass.new(foreman_params)
         process_response @puppetclass.save
       end
 
@@ -73,7 +73,7 @@ module Api
       param_group :puppetclass
 
       def update
-        process_response @puppetclass.update_attributes(params[:puppetclass])
+        process_response @puppetclass.update_attributes(foreman_params)
       end
 
       api :DELETE, "/puppetclasses/:id/", N_("Delete a Puppet class")

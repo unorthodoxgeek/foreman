@@ -409,7 +409,7 @@ context "location or organizations are not enabled" do
   test "should not save if root password is undefined when the host is managed" do
     host = Host.new :name => "myfullhost", :managed => true
     refute host.valid?
-    assert_present host.errors[:root_pass]
+    assert host.errors[:root_pass].present?
   end
 
   test "should save if root password is undefined when the compute resource is image capable" do
@@ -1661,7 +1661,7 @@ end # end of context "location or organizations are not enabled"
 
   test 'facts are deleted when build set to true' do
     host = FactoryGirl.create(:host, :with_facts)
-    assert_present host.fact_values
+    assert host.fact_values.present?
     refute host.build?
     host.update_attributes(:build => true)
     assert_empty host.fact_values.reload
@@ -1669,7 +1669,7 @@ end # end of context "location or organizations are not enabled"
 
   test 'reports are deleted when build set to true' do
     host = FactoryGirl.create(:host, :with_reports)
-    assert_present host.reports
+    assert host.reports.present?
     refute host.build?
     host.update_attributes(:build => true)
     assert_empty host.reports.reload

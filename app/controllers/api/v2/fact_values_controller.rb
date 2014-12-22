@@ -8,8 +8,8 @@ module Api
       param_group :search_and_pagination, ::Api::V2::BaseController
 
       def index
-        values = resource_scope_for_index.includes(:fact_name, :host)
-        @fact_values = FactValue.build_facts_hash(values.all)
+        values = resource_scope_for_index.includes(:fact_name, :host).to_a
+        @fact_values = FactValue.build_facts_hash(values)
       end
 
     end

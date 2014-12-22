@@ -56,7 +56,7 @@ module Api
       param_group :domain, :as => :create
 
       def create
-        @domain = Domain.new(params[:domain])
+        @domain = Domain.new(foreman_params)
         process_response @domain.save
       end
 
@@ -65,7 +65,7 @@ module Api
       param_group :domain
 
       def update
-        process_response @domain.update_attributes(params[:domain])
+        process_response @domain.update_attributes(foreman_params)
       end
 
       api :DELETE, "/domains/:id/", N_("Delete a domain")
