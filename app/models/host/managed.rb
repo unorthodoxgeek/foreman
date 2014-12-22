@@ -518,7 +518,7 @@ class Host::Managed < Host::Base
   def self.count_distribution(association)
     output = []
     data = group("#{Host.table_name}.#{association}_id").reorder('').count
-    associations = association.to_s.camelize.constantize.where(:id => data.keys).all
+    associations = association.to_s.camelize.constantize.where(:id => data.keys).to_a
     data.each do |k,v|
       begin
         output << {:label => associations.detect {|a| a.id == k }.to_label, :data => v }  unless v == 0

@@ -21,8 +21,6 @@ class AuthSourceLdap < AuthSource
   SERVER_TYPES = { :free_ipa => 'FreeIPA', :active_directory => 'Active Directory',
                    :posix    => 'POSIX'}
 
-  extend FriendlyId
-  friendly_id :name
   include Parameterizable::ByIdName
   include Encryptable
   encrypts :account_password
