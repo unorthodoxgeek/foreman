@@ -32,7 +32,7 @@ class Authorizer
                                                               "OR (#{locations})",
                                                           *values]).uniq
 
-    all_filters = all_filters.all # load all records, so #empty? does not call extra COUNT(*) query
+    all_filters = all_filters.to_a # load all records, so #empty? does not call extra COUNT(*) query
     return resource_class.where('1=0') if all_filters.empty?
 
     unless @base_collection.nil?

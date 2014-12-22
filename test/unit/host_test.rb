@@ -1767,7 +1767,7 @@ class HostTest < ActiveSupport::TestCase
 
   test 'facts are deleted when build set to true' do
     host = FactoryGirl.create(:host, :with_facts)
-    assert_present host.fact_values
+    assert host.fact_values.present?
     refute host.build?
     host.update_attributes(:build => true)
     assert_empty host.fact_values.reload
@@ -1775,7 +1775,7 @@ class HostTest < ActiveSupport::TestCase
 
   test 'reports are deleted when build set to true' do
     host = FactoryGirl.create(:host, :with_reports)
-    assert_present host.reports
+    assert host.reports.present?
     refute host.build?
     host.update_attributes(:build => true)
     assert_empty host.reports.reload

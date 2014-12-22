@@ -4,8 +4,6 @@ class Subnet < ActiveRecord::Base
   IPAM_MODES = {:dhcp => N_('DHCP'), :db => N_('Internal DB'), :none => N_('None')}
 
   include Authorizable
-  extend FriendlyId
-  friendly_id :name
   include Taxonomix
   include Parameterizable::ByIdName
   include EncOutput

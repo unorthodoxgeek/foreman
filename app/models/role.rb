@@ -17,8 +17,6 @@
 
 class Role < ActiveRecord::Base
   include Authorizable
-  extend FriendlyId
-  friendly_id :name
 
   include Parameterizable::ByIdName
 
@@ -28,7 +26,7 @@ class Role < ActiveRecord::Base
   audited :allow_mass_assignment => true
 
   scope :givable, lambda { where(:builtin => 0).order(:name) }
-  scope :for_current_user, lambda { User.current.admin? ? {} : where(:id => User.current.role_ids) }
+  scope :for_current_user, lambda { User.current.admin? ? all : where(:id => User.current.role_ids) }
   scope :builtin, lambda { |*args|
     compare = 'not' if args.first
     where("#{compare} builtin = 0")
@@ -55,6 +53,10 @@ class Role < ActiveRecord::Base
   def initialize(*args)
     super(*args)
     self.builtin = 0
+  end
+
+  def permissions=(perms)
+    add_permissions(perms.map(&:name)) if perms.present?
   end
 
   # Returns true if the role has the given permission
@@ -126,7 +128,8 @@ class Role < ActiveRecord::Base
     permissions = Array(permissions)
     search = options.delete(:search)
 
-    collection = Permission.where(:name => permissions).all
+    collection = Permission.where(:name => permissions).to_a
+    p permissions if collection.size != permissions.size
     raise ArgumentError, 'some permissions were not found' if collection.size != permissions.size
 
     collection.group_by(&:resource_type).each do |resource_type, grouped_permissions|

@@ -1,8 +1,6 @@
 class Puppetclass < ActiveRecord::Base
   include Authorizable
   include ScopedSearchExtensions
-  extend FriendlyId
-  friendly_id :name
   include Parameterizable::ByIdName
 
   validates_lengths_from_database
