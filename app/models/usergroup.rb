@@ -1,8 +1,6 @@
 class Usergroup < ActiveRecord::Base
   audited :allow_mass_assignment => true
   include Authorizable
-  extend FriendlyId
-  friendly_id :name
   include Parameterizable::ByIdName
 
   validates_lengths_from_database

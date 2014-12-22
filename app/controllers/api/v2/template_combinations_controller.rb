@@ -19,7 +19,7 @@ module Api
       end
 
       def create
-        @template_combination = @config_template.template_combinations.build(params[:template_combination])
+        @template_combination = @config_template.template_combinations.build(foreman_params
         process_response @template_combination.save
       end
 

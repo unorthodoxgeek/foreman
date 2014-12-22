@@ -12,7 +12,15 @@ module Parameterizable
       end
 
       def self.from_param(id)
-        self.find(id.to_i)
+        self.where(id: id.to_i).first
+      end
+
+      def self.xfind(*args)
+        if args.size == 1 && [String, Integer].include?(args.first.class)
+          from_param(args.first)
+        else
+          super
+        end
       end
     end
   end
@@ -27,7 +35,15 @@ module Parameterizable
       end
 
       def self.from_param(id_name)
-        self.find(id_name.to_i)
+        self.where(id: id_name.to_i).first
+      end
+
+      def self.find(*args)
+        if args.size == 1 && [String, Integer].include?(args.first.class)
+          from_param(args.first)
+        else
+          super
+        end
       end
     end
   end
@@ -45,7 +61,15 @@ module Parameterizable
       end
 
       def self.from_param(name)
-        self.find_by_name(name)
+        self.where(name: name).first
+      end
+
+      def self.xfind(*args)
+        if args.size == 1 && [String, Integer].include?(args.first.class)
+          from_param(args.first)
+        else
+          super
+        end
       end
     end
   end
