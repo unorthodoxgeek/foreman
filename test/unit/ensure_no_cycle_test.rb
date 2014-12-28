@@ -11,6 +11,11 @@ class EnsureNoCycleTest < ActiveSupport::TestCase
     @graph = ActiveRecord::Base::EnsureNoCycle.new(base, :source, :target)
   end
 
+  #apparently, ActiveModel::Errors calls that...
+  def OpenStruct.i18n_scope
+    :en
+  end
+
   def edge(source, target)
     OpenStruct.new(:source => source, :target => target)
   end

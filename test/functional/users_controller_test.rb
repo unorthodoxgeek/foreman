@@ -235,7 +235,6 @@ class UsersControllerTest < ActionController::TestCase
     Setting['authorize_login_delegation_auth_source_user_autocreate'] = 'apache_mod'
     @request.env['REMOTE_USER'] = 'ares'
     get :extlogin, {}, {}
-    p User.where(login: 'ares').first
     assert_redirected_to edit_user_path(User.find_by_login('ares'))
   end
 

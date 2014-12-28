@@ -48,7 +48,9 @@ class FactImporter
   attr_reader :host, :facts
 
   def delete_removed_facts
-    to_delete = host.fact_values.joins(:fact_name).where('fact_names.name NOT IN (?)', facts.keys)
+    #in rails4 join makes the returned set read only, so let's collect the ids and fetch everything again. :(
+    to_delete_ids = host.fact_values.joins(:fact_name).where('fact_names.name NOT IN (?)', facts.keys).pluck(:id)
+    to_delete = host.fact_values.where(id: to_delete_ids)
     # N+1 DELETE SQL, but this would allow us to use callbacks (e.g. auditing) when deleting.
     deleted = to_delete.destroy_all
     @counters[:deleted] = deleted.size

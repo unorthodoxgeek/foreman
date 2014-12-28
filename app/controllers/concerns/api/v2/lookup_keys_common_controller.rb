@@ -52,7 +52,7 @@ module Api::V2::LookupKeysCommonController
     end
 
     def find_host
-      @host = Host::Base.authorized(:view_hosts).find(params['host_id'])
+      @host = Host::Base.authorized(:view_hosts).friendly.find(params['host_id'])
     end
 
     def find_hostgroup

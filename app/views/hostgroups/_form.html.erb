@@ -58,7 +58,7 @@
       <p/>
       <%= render "puppetclasses/classes_parameters", { :obj => @hostgroup } %>
       <p/>
-      <%= render "common_parameters/inherited_parameters" %>
+      <%= render "common_parameters/inherited_parameters", :inherited_parameters => @hostgroup.inherited_params(true) %>
       <h6><%= _('Host group parameters') %></h6>
       <p/>
       <%= render "common_parameters/puppetclasses_parameters", :f => f %>

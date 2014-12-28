@@ -4,8 +4,7 @@ require 'uri'
 class Operatingsystem < ActiveRecord::Base
   include Authorizable
   include ValidateOsFamily
-  extend FriendlyId
-  friendly_id :title
+  include Parameterizable::ByIdName
 
   validates_lengths_from_database
   before_destroy EnsureNotUsedBy.new(:hosts, :hostgroups)
@@ -69,6 +68,11 @@ class Operatingsystem < ActiveRecord::Base
 
   class Jail < Safemode::Jail
     allow :name, :media_url, :major, :minor, :family, :to_s, :repos, :==, :release_name, :kernel, :initrd, :pxe_type, :medium_uri
+  end
+
+  def to_param
+    # remove characters unsafe for urls, keep unicode ones
+    Parameterizable.parameterize("#{id}-#{title}")
   end
 
   # As Rails loads an object it casts it to the class in the 'type' field. If we ensure that the type and
