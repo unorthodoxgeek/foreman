@@ -110,8 +110,8 @@ class UnattendedController < ApplicationController
   end
 
   def find_host_by_spoof
-    host = Nic::Base.primary.find_by_ip(params.delete('spoof')).try(:host) if params['spoof'].present?
-    host ||= Host.find(params.delete('hostname')) if params['hostname'].present?
+    host   = Nic::Base.primary.find_by_ip(params.delete('spoof')).try(:host) if params['spoof'].present?
+    host ||= Host.friendly.find(params.delete('hostname')) if params['hostname'].present?
     @spoof = host.present?
     host
   end

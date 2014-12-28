@@ -30,9 +30,10 @@ module HostCommon
 
     alias_method :all_puppetclasses, :classes
 
-    has_many :lookup_values, -> (i){ where('lookup_values.match' => i.send(:lookup_value_match)) }, :dependent => :destroy, :primary_key => nil, :foreign_key => nil, :validate => false
+    has_many :lookup_values, -> (i){ where('lookup_values.match' => i.send(:lookup_value_match)) }, :primary_key => nil, :foreign_key => nil, :validate => false
     # See "def lookup_values_attributes=" under, for the implementation of accepts_nested_attributes_for :lookup_values
     accepts_nested_attributes_for :lookup_values
+    after_destroy :destroy_lookup_values
 
     # Replacement of accepts_nested_attributes_for :lookup_values,
     # to work around the lack of `host_id` column in lookup_values.
@@ -54,6 +55,10 @@ module HostCommon
 
     def lookup_values
       LookupValue.where('lookup_values.match' => lookup_value_match)
+    end
+
+    def destroy_lookup_values
+      lookup_values.destroy_all
     end
   end
 

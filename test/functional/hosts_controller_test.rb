@@ -97,14 +97,14 @@ class HostsControllerTest < ActionController::TestCase
     Resolv.any_instance.stubs(:getnames).returns(['else.where'])
     get :externalNodes, {:name => @host.name}, set_session_user
     assert_response :success
-    assert_template :text => @host.info.to_yaml.gsub("\n","<br/>")
+    assert response.body == "<pre>#{ERB::Util.html_escape(@host.info.to_yaml)}</pre>"
   end
 
   test "externalNodes should render yml request correctly" do
     Resolv.any_instance.stubs(:getnames).returns(['else.where'])
     get :externalNodes, {:name => @host.name, :format => "yml"}, set_session_user
     assert_response :success
-    assert_template :text => @host.info.to_yaml
+    assert response.body == @host.info.to_yaml
   end
 
   test "when host is not saved after setBuild, the flash should inform it" do
@@ -362,6 +362,7 @@ class HostsControllerTest < ActionController::TestCase
     post :update_multiple_parameters,
       {:name => { "p1" => "hello"},:host_ids => [@host1.id, @host2.id]},
       set_session_user.merge(:user => users(:admin).id)
+    p response.body
     assert Host.find(@host1.id).host_parameters[0][:value] == "hello"
     assert Host.find(@host2.id).host_parameters[0][:value] == "hello"
   end
@@ -763,7 +764,7 @@ class HostsControllerTest < ActionController::TestCase
 
   test "blank root password submitted does not erase existing password" do
     old_root_pass = @host.root_pass
-    put :update, { :commit => "Update", :id => @host.name, :host => {:root_pass => ''} }, set_session_user
+    put :update, { :commit => "Update", :id => @host.name, :host => {:root_pass => '', :provider => 'IPMI'} }, set_session_user
     @host = Host.find(@host.id)
     assert_equal old_root_pass, @host.root_pass
   end

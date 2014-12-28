@@ -24,6 +24,7 @@ Foreman::Application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
   config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = false
   ActionMailer::Base.deliveries.clear
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.

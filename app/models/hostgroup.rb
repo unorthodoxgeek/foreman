@@ -1,7 +1,6 @@
 class Hostgroup < ActiveRecord::Base
   include Authorizable
-  extend FriendlyId
-  friendly_id :title
+  include Parameterizable::ByIdName
   include Taxonomix
   include HostCommon
 
@@ -36,6 +35,7 @@ class Hostgroup < ActiveRecord::Base
 
   alias_attribute :arch, :architecture
   alias_attribute :os, :operatingsystem
+
   has_many :trends, :as => :trendable, :class_name => "ForemanTrend"
 
   nested_attribute_for :compute_profile_id, :environment_id, :domain_id, :puppet_proxy_id, :puppet_ca_proxy_id,
@@ -101,6 +101,11 @@ class Hostgroup < ActiveRecord::Base
 
   #TODO: add a method that returns the valid os for a hostgroup
 
+  def to_param
+    # remove characters unsafe for urls, keep unicode ones
+    Parameterizable.parameterize("#{id}-#{title}")
+  end
+
   def hostgroup
     self
   end
@@ -162,8 +167,8 @@ class Hostgroup < ActiveRecord::Base
     # read common parameters
     CommonParameter.all.each {|p| hp.update Hash[p.name => include_source ? {:value => p.value, :source => N_('common').to_sym} : p.value] }
     # read organization and location parameters
-    hp.update organization.parameters(include_source) if SETTINGS[:organizations_enabled] && organization
-    hp.update location.parameters(include_source)     if SETTINGS[:locations_enabled] && location
+    #hp.update organization.parameters(include_source) if SETTINGS[:organizations_enabled] && organization
+    #hp.update location.parameters(include_source)     if SETTINGS[:locations_enabled] && location
     # read domain parameters
     domain.domain_parameters.each {|p| hp.update Hash[p.name => include_source ? {:value => p.value, :source => N_('domain').to_sym} : p.value] } unless domain.nil?
     # read OS parameters
