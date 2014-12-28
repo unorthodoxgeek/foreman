@@ -49,7 +49,7 @@ module Foreman::Controller::TaxonomiesController
   end
 
   def create
-    @taxonomy = taxonomy_class.new(taxonomy_params[taxonomy_single.to_sym])
+    @taxonomy = taxonomy_class.new(foreman_params)
     if @taxonomy.save
       if @count_nil_hosts > 0
         redirect_to send("step2_#{taxonomy_single}_path",@taxonomy)
@@ -76,7 +76,7 @@ module Foreman::Controller::TaxonomiesController
 
   def update
     result = Taxonomy.no_taxonomy_scope do
-      @taxonomy.update_attributes(taxonomy_params[taxonomy_single])
+      @taxonomy.update_attributes(foreman_params)
     end
     if result
       process_success(:object => @taxonomy)

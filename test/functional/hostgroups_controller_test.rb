@@ -79,7 +79,7 @@ class HostgroupsControllerTest < ActionController::TestCase
     hostgroup = hostgroups(:common)
     old_root_pass = hostgroup.root_pass
     as_admin do
-      put :update, {:commit => "Update", :id => hostgroup.id, :hostgroup => {:root_pass => ''} }, set_session_user
+      put :update, {:commit => "Update", :id => hostgroup.id, :hostgroup => {:root_pass => '', :name => hostgroup.name} }, set_session_user
     end
     hostgroup = Hostgroup.find(hostgroup.id)
     assert_equal old_root_pass, hostgroup.root_pass

@@ -103,8 +103,8 @@ class UnattendedController < ApplicationController
   end
 
   def find_host_by_spoof
-    host = Nic::Base.primary.find_by_ip(params.delete('spoof')).try(:host) if params['spoof'].present?
-    host ||= Host.find(params.delete('hostname')) if params['hostname'].present?
+    host   = Nic::Base.primary.find_by_ip(params.delete('spoof')).try(:host) if params['spoof'].present?
+    host ||= Host.friendly.find(params.delete('hostname')) if params['hostname'].present?
     @spoof = host.present?
     host
   end
@@ -299,6 +299,7 @@ class UnattendedController < ApplicationController
     begin
       render :inline => "<%= unattended_render(@unsafe_template, @template_name).html_safe %>" and return
     rescue => exc
+      p exc.backtrace
       msg = _("There was an error rendering the %s template: ") % (@template_name)
       render :text => msg + exc.message, :status => :internal_server_error and return
     end
