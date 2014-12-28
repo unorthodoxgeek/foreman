@@ -140,7 +140,7 @@ class Api::V2::HostsControllerTest < ActionController::TestCase
   end
 
   test "should update host" do
-    put :update, { :id => @host.to_param, :host => { } }
+    put :update, { :id => @host.to_param, :host => valid_attrs }
     assert_response :success
   end
 
@@ -197,7 +197,7 @@ class Api::V2::HostsControllerTest < ActionController::TestCase
     disable_orchestration
     host = FactoryGirl.create(:host, :owner => users(:restricted))
     setup_user 'edit', 'hosts', "owner_type = User and owner_id = #{users(:restricted).id}", :restricted
-    put :update, { :id => host.to_param, :host => {} }
+    put :update, { :id => host.to_param, :host => valid_attrs }
     assert_response :success
   end
 
