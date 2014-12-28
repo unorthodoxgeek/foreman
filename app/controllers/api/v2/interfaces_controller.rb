@@ -65,7 +65,7 @@ module Api
       param_group :interface, :as => :create
 
       def create
-        @interface = @nested_obj.interfaces.new(foreman_params, :without_protection => true)
+        @interface = @nested_obj.interfaces.new(foreman_params)
         process_response @interface.save
       end
 
@@ -75,7 +75,7 @@ module Api
       param_group :interface
 
       def update
-        process_response @interface.update_attributes(foreman_params, :without_protection => true)
+        process_response @interface.update_attributes(foreman_params)
       end
 
       api :DELETE, "/hosts/:host_id/interfaces/:id", N_("Delete a host's interface")

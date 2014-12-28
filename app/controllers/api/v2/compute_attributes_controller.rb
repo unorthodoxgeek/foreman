@@ -20,9 +20,9 @@ module Api
       param_group :compute_attribute, :as => :create
 
       def create
-        params[:compute_attribute].merge!(:compute_profile_id => params[:compute_profile_id],
+        foreman_params.merge!(:compute_profile_id => params[:compute_profile_id],
                                           :compute_resource_id => params[:compute_resource_id])
-        @compute_attribute = ComputeAttribute.create!(foreman_params)
+        @compute_attribute = ComputeAttribute.create(foreman_params)
         render :json => @compute_attribute.to_json
       end
 

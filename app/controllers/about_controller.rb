@@ -3,7 +3,6 @@ class AboutController < ApplicationController
 
   def index
     @smart_proxies = SmartProxy.authorized(:view_smart_proxies).includes(:features)
-    p @smart_proxies.map(&:id)
     @compute_resources = ComputeResource.authorized(:view_compute_resources)
     @plugins = Foreman::Plugin.all
   end

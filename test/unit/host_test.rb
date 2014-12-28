@@ -589,14 +589,14 @@ context "location or organizations are not enabled" do
     end
 
     test "available_template_kinds finds templates for a PXE host" do
-      os_dt = FactoryGirl.create(:os_default_template, :template_kind=> TemplateKind.find('finish'))
+      os_dt = FactoryGirl.create(:os_default_template, :template_kind=> TemplateKind.friendly.find('finish'))
       host  = FactoryGirl.create(:host, :operatingsystem => os_dt.operatingsystem)
 
       assert_equal [os_dt.config_template], host.available_template_kinds('build')
     end
 
     test "available_template_kinds finds templates for an image host" do
-      os_dt = FactoryGirl.create(:os_default_template, :template_kind=> TemplateKind.find('finish'))
+      os_dt = FactoryGirl.create(:os_default_template, :template_kind=> TemplateKind.friendly.find('finish'))
       host  = FactoryGirl.create(:host, :on_compute_resource,
                                  :operatingsystem => os_dt.operatingsystem)
       FactoryGirl.create(:image, :uuid => 'abcde',
