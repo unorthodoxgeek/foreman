@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class ReportTest < ActionDispatch::IntegrationTest
+class ReportIntegrationTest < ActionDispatch::IntegrationTest
+
   def setup
     @report = FactoryGirl.create(:report, :old_report)
   end

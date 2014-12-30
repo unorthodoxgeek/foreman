@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class HostTest < ActionDispatch::IntegrationTest
+class HostIntegrationTest < ActionDispatch::IntegrationTest
+
   def setup
     Capybara.current_driver = Capybara.javascript_driver
     login_admin

@@ -23,7 +23,7 @@ class AuthSourceLdap < AuthSource
 
   include Parameterizable::ByIdName
 
-  validates :host, :presence => true, :length => {:maximum => 60}, :allow_nil => true
+  validates :host, :presence => true, :length => {:maximum => 60}, :if => Proc.new{|auth| !auth.new_record?}
   validates :attr_login, :attr_firstname, :attr_lastname, :attr_mail, :presence => true, :if => Proc.new { |auth| auth.onthefly_register? }
   validates :attr_login, :attr_firstname, :attr_lastname, :attr_mail, :length => {:maximum => 30}, :allow_nil => true
   validates :account_password, :length => {:maximum => 60}, :allow_nil => true
@@ -91,7 +91,7 @@ class AuthSourceLdap < AuthSource
   end
 
   def update_usergroups(login)
-    internal = User.find(login).external_usergroups.map(&:name)
+    internal = User.friendly.find(login).external_usergroups.map(&:name)
     external = ldap_con(account, account_password).group_list(login)
     (internal | external).each do |name|
       begin

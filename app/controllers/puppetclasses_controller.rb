@@ -61,8 +61,8 @@ class PuppetclassesController < ApplicationController
       @obj ||= Hostgroup.new(params.require(:hostgroup).permit(permitted_hostgroup_attributes)) if params['hostgroup']
     else
       if params['host']
-        @obj = Host::Base.find(params['host_id'])
-        unless @obj.is_a?(Host::Managed)
+        @obj = Host::Base.friendly.find(params['host_id'])
+        unless @obj.kind_of?(Host::Managed)
           @obj      = @obj.becomes(Host::Managed)
           @obj.type = "Host::Managed"
         end
