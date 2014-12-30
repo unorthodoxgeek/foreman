@@ -16,7 +16,7 @@ module Parameterizable
         self.where(id: id.to_i).first
       end
 
-      def self.xfind(*args)
+      def self.find(*args)
         if args.size == 1 && [String, Integer].include?(args.first.class)
           from_param(args.first)
         else
@@ -40,7 +40,7 @@ module Parameterizable
       end
 
       def self.find(*args)
-        if args.size == 1 && [String, Integer].include?(args.first.class)
+        if args.size == 1 && (args.first.is_a?(String) || args.first.is_a?(Numeric))
           from_param(args.first)
         else
           super

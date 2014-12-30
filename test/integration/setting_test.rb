@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SettingTest < ActionDispatch::IntegrationTest
+class SettingIntegrationTest < ActionDispatch::IntegrationTest
 
   test "index page" do
     assert_index_page(settings_path,"Settings",false,true,false)

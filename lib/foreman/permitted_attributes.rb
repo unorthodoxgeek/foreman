@@ -68,16 +68,18 @@ module Foreman
 
     @@organization_attributes = @@location_attributes = [
       :name,
-      :environment_ids,
-      :hostgroup_ids,
-      :subnet_ids,
-      :domain_ids,
-      :medium_ids,
-      :user_ids,
-      :smart_proxy_ids,
-      :config_template_ids,
-      :compute_resource_ids,
-      :location_ids
+      {
+        :environment_ids => [],
+        :hostgroup_ids => [],
+        :subnet_ids => [],
+        :domain_ids => [],
+        :medium_ids => [],
+        :user_ids => [],
+        :smart_proxy_ids => [],
+        :config_template_ids => [],
+        :compute_resource_ids => [],
+        :location_ids => []
+      }
     ]
 
     @@architecture_attributes = [
@@ -93,7 +95,7 @@ module Foreman
 
     @@operatingsystem_attributes = [
       :name, :major, :minor, :description, :family,
-      :release_name, :password_hash, {:architecture_ids => [],
+      :release_name, :password_hash, {:architectures => [], :architecture_ids => [], :architecture_names => [],
       :ptable_ids => [], :medium_ids => []}
     ]
 
@@ -144,7 +146,7 @@ module Foreman
     ]
 
     @@compute_attribute_attributes = [
-      :compute_profile_id, :compute_resource_id, :name
+      :compute_profile_id, :compute_resource_id, :name, :vm_attrs => {}
     ]
 
     @@nics_attributes = [
