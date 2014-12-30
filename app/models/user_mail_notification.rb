@@ -3,7 +3,7 @@ class UserMailNotification < ActiveRecord::Base
   belongs_to :user
   belongs_to :mail_notification
 
-  validates :user_id, :presence => true
+  #validates :user_id, :presence => true
   validates :mail_notification, :presence => true
 
   scope :daily, lambda { where(:interval => 'Daily') }

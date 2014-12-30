@@ -6,7 +6,7 @@ module Api
       end
 
       before_filter :find_optional_nested_object
-      before_filter :find_resource, :only => %w{show edit update destroy bootfiles}
+      before_filter :find_resource, :only => %w{edit update destroy bootfiles}
 
       api :GET, "/operatingsystems/", N_("List all operating systems")
       api :GET, "/architectures/:architecture_id/operatingsystems", N_("List all operating systems for nested architecture")
@@ -27,6 +27,7 @@ module Api
       param :id, String, :required => true
 
       def show
+        @operatingsystem = Operatingsystem.find(params[:id])
       end
 
       def_param_group :operatingsystem do
