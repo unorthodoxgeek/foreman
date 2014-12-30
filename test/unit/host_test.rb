@@ -1383,7 +1383,7 @@ context "location or organizations are not enabled" do
   end
 
   test "compute attributes are populated by hardware profile from hostgroup" do
-    # hostgroups(:common) fixture has compute_profiles(:one)
+    # hostgroups(:common) fixture has compute_profiles(:one)validate_compute_provisioning
     host = FactoryGirl.build(:host, :managed, :hostgroup => hostgroups(:common), :compute_resource => compute_resources(:ec2) )
     host.expects(:queue_compute_create)
     assert host.valid?, host.errors.full_messages.to_sentence

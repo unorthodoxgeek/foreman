@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HostTest < ActionDispatch::IntegrationTest
+class HostIntegrationTest < ActionDispatch::IntegrationTest
 
   def setup
     as_admin { @host = FactoryGirl.create(:host, :with_puppet, :managed) }
