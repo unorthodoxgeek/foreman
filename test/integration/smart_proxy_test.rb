@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class SmartProxyTest < ActionDispatch::IntegrationTest
+class SmartProxyIntegrationTest < ActionDispatch::IntegrationTest
+
   test "index page" do
     assert_index_page(smart_proxies_path,"Smart Proxies","New Smart Proxy",false)
   end

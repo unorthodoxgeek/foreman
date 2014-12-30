@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class CommonParameterTest < ActionDispatch::IntegrationTest
+class CommonParameterIntegrationTest < ActionDispatch::IntegrationTest
+
   test "index page" do
     assert_index_page(common_parameters_path,"Global Parameters","New Parameter")
   end

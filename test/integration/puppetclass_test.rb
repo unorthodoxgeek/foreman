@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class PuppetclassTest < ActionDispatch::IntegrationTest
+class PuppetclassIntegrationTest < ActionDispatch::IntegrationTest
+
   test "edit page" do
     visit puppetclasses_path
     click_link "vim"

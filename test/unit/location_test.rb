@@ -88,8 +88,6 @@ class LocationTest < ActiveSupport::TestCase
     assert_equal used_ids[:realm_ids], realm_ids
     assert_equal used_ids[:medium_ids], medium_ids
     assert_equal used_ids[:compute_resource_ids], compute_resource_ids
-    p used_ids
-    p used_ids[:user_ids]
     assert_equal used_ids[:user_ids].sort, user_ids.sort
     assert_equal used_ids[:smart_proxy_ids].sort, smart_proxy_ids.sort
     assert_equal used_ids[:provisioning_template_ids], provisioning_template_ids

@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class RoleTest < ActionDispatch::IntegrationTest
+class RoleIntegrationTest < ActionDispatch::IntegrationTest
+
   test "index page" do
     assert_index_page(roles_path,"Roles","New role")
   end

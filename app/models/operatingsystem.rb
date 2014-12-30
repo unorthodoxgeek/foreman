@@ -71,11 +71,6 @@ class Operatingsystem < ActiveRecord::Base
     allow :name, :media_url, :major, :minor, :family, :to_s, :repos, :==, :release_name, :kernel, :initrd, :pxe_type, :medium_uri
   end
 
-  def to_param
-    # remove characters unsafe for urls, keep unicode ones
-    Parameterizable.parameterize("#{id}-#{title}")
-  end
-
   # As Rails loads an object it casts it to the class in the 'type' field. If we ensure that the type and
   # family are the same thing then rails converts the record to a Debian or a solaris object as required.
   # Manually managing the 'type' field allows us to control the inheritance chain and the available methods
@@ -143,6 +138,10 @@ class Operatingsystem < ActiveRecord::Base
 
   def to_param
     Parameterizable.parameterize("#{id}-#{title}")
+  end
+
+  def self.from_param(id_name)
+    where(id: id_name.to_i).first || where(name: id_name.split(" ")[0..-2].join(' ')).first || where(description: id_name).first
   end
 
   def release

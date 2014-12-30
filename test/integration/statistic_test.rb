@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class StatisticTest < ActionDispatch::IntegrationTest
+class StatisticIntegrationTest < ActionDispatch::IntegrationTest
+
   test "statistics page" do
     visit statistics_path
     assert page.has_selector?('h4', :text => "OS Distribution")

@@ -25,7 +25,7 @@ class AuthSourceLdap < AuthSource
   include Encryptable
   encrypts :account_password
 
-  validates :host, :presence => true, :length => {:maximum => 60}, :allow_nil => true
+  validates :host, :presence => true, :length => {:maximum => 60}, :if => Proc.new{|auth| !auth.new_record?}
   validates :attr_login, :attr_firstname, :attr_lastname, :attr_mail, :presence => true, :if => Proc.new { |auth| auth.onthefly_register? }
   validates :attr_login, :attr_firstname, :attr_lastname, :attr_mail, :length => {:maximum => 30}, :allow_nil => true
   validates :account_password, :length => {:maximum => 60}, :allow_nil => true
@@ -104,8 +104,10 @@ class AuthSourceLdap < AuthSource
     end
 
     logger.debug "Updating user groups for user #{login}"
-    internal = User.find(login).external_usergroups.map(&:name)
+
+    internal = User.friendly.find(login).external_usergroups.map(&:name)
     external = ldap_con.group_list(login)
+
     (internal | external).each do |name|
       begin
         external_usergroup = external_usergroups.find_by_name(name)

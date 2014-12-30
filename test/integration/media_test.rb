@@ -1,6 +1,7 @@
 require 'test_helper'
 
-class MediaTest < ActionDispatch::IntegrationTest
+class MediaIntegrationTest < ActionDispatch::IntegrationTest
+
   test "index page" do
     assert_index_page(media_path,"Media","New Medium")
   end
