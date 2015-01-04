@@ -1,5 +1,5 @@
 class RemoveDuplicateSnippets < ActiveRecord::Migration
-  def self.up
+  def up
     # Remove duplicates of http_proxy added by 20110420150600_add_solaris_templates
     ConfigTemplate.destroy_all(:name => "HTTP proxy")
 
@@ -9,7 +9,7 @@ class RemoveDuplicateSnippets < ActiveRecord::Migration
     epels.each { |t| t.destroy }
   end
 
-  def self.down
+  def down
     TemplateKind.all.each do |k|
       t = ConfigTemplate.find_by_name(:http_proxy).clone
       t.name = "HTTP proxy"
