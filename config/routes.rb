@@ -396,7 +396,7 @@ Foreman::Application.routes.draw do
         get 'step2'
         get 'assign_hosts'
         post 'assign_all_hosts'
-        put 'assign_selected_hosts'
+        patch 'assign_selected_hosts'
         post 'parent_taxonomy_selected'
       end
       collection do
@@ -418,7 +418,7 @@ Foreman::Application.routes.draw do
         get 'step2'
         get 'assign_hosts'
         post 'assign_all_hosts'
-        put 'assign_selected_hosts'
+        patch 'assign_selected_hosts'
         post 'parent_taxonomy_selected'
       end
       collection do
