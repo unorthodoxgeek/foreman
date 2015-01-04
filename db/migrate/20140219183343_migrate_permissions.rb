@@ -5,11 +5,11 @@ require Rails.root + 'db/seeds.d/03-permissions'
 # original models changes later (e.g. add validation on columns that are not
 # present at this moment)
 class FakePermission < ActiveRecord::Base
-  set_table_name 'permissions'
+  self.table_name = 'permissions'
 end
 
 class FakeFilter < ActiveRecord::Base
-  set_table_name 'filters'
+  self.table_name = 'filters'
   # we need this for polymorphic relation to work, it has class name hardcoded in AR
   def self.name
     'Filter'
@@ -22,7 +22,7 @@ class FakeFilter < ActiveRecord::Base
     @resource_type ||= permissions.first.try(:resource_type)
   end
 
-  taxonomy_join_table = "taxable_taxonomies"
+  taxonomy_join_table = :taxable_taxonomies
   has_many taxonomy_join_table, :dependent => :destroy, :as => :taxable, :foreign_key => 'taxable_id'
   has_many :locations,     :through => taxonomy_join_table, :source => :taxonomy,
            :conditions => "taxonomies.type='Location'", :validate => false
@@ -31,25 +31,25 @@ class FakeFilter < ActiveRecord::Base
 end
 
 class FakeUserRole < ActiveRecord::Base
-  set_table_name 'user_roles'
+  self.table_name = 'user_roles'
   belongs_to :owner, :polymorphic => true
   belongs_to :role, :class_name => 'FakeRole'
 end
 
 class FakeRole < ActiveRecord::Base
-  set_table_name 'roles'
+  self.table_name = 'roles'
   has_many :filters, :dependent => :destroy, :class_name => 'FakeFilter', :foreign_key => 'role_id'
   has_many :permissions, :through => :filters, :class_name => 'FakePermission', :foreign_key => 'permission_id'
 end
 
 class FakeFiltering < ActiveRecord::Base
-  set_table_name 'filterings'
+  self.table_name = 'filterings'
   belongs_to :filter, :class_name => 'FakeFilter'
   belongs_to :permission, :class_name => 'FakePermission'
 end
 
 class FakeUser < ActiveRecord::Base
-  set_table_name 'users'
+  self.table_name = 'users'
   # we need this for polymorphic relation to work, it has class name hardcoded in AR
   def self.name
     'User'
@@ -64,7 +64,7 @@ class FakeUser < ActiveRecord::Base
   has_many :user_roles, :dependent => :destroy, :foreign_key => 'owner_id',
            :conditions => {:owner_type => 'User'}, :class_name => 'FakeUserRole'
   has_many :roles, :through => :user_roles, :dependent => :destroy, :class_name => 'FakeRole'
-  taxonomy_join_table = "taxable_taxonomies"
+  taxonomy_join_table = :taxable_taxonomies
   has_many taxonomy_join_table, :dependent => :destroy, :as => :taxable, :foreign_key => 'taxable_id'
   has_many :locations,     :through => taxonomy_join_table, :source => :taxonomy,
            :conditions => "taxonomies.type='Location'", :validate => false
@@ -75,7 +75,7 @@ class FakeUser < ActiveRecord::Base
 end
 
 class MigratePermissions < ActiveRecord::Migration
-  def self.up
+  def up
     if old_permissions_present
       make_sure_all_permissions_are_present
       migrate_roles
@@ -94,17 +94,17 @@ class MigratePermissions < ActiveRecord::Migration
   # some engines could have defined new permissions during their initialization
   # but permissions table hadn't existed yet so we check all registered
   # permissions and create those that are missing in database
-  def self.make_sure_all_permissions_are_present
+  def make_sure_all_permissions_are_present
     engine_permissions = Foreman::AccessControl.permissions.select { |p| p.engine.present? }
     engine_permissions.each do |permission|
-      FakePermission.find_or_create_by(:name => permission.name, :resource_type => permission.resource_type])
+      FakePermission.find_or_create_by(:name => permission.name, :resource_type => permission.resource_type)
     end
   end
 
   # STEP 1 - migrate roles
   # for all role permissions we'll create unlimited filters
   # we'll group permissions into filters by their resource
-  def self.migrate_roles
+  def migrate_roles
     roles = FakeRole.all
     roles.each do |role|
       # role without permissions? nothing to do then
@@ -148,7 +148,7 @@ class MigratePermissions < ActiveRecord::Migration
     end
   end
 
-  def self.clear_old_permission(role)
+  def clear_old_permission(role)
     say "Clearing old permissions for role '#{role.name}'"
     if FakeRole.update_all("permissions = NULL", "id = #{role.id}") == 1
       say "... OK"
@@ -160,7 +160,7 @@ class MigratePermissions < ActiveRecord::Migration
   # STEP 2 - migrate user filters
   # for every user having a filter we make copy of all his roles and add filtering scoped searches
   # to corresponding filters
-  def self.migrate_user_filters
+  def migrate_user_filters
     users = FakeUser.all
     users.each do |user|
       unless filtered?(user)
@@ -219,7 +219,7 @@ class MigratePermissions < ActiveRecord::Migration
     end
   end
 
-  def self.convert_filters_to_search(filters, user)
+  def convert_filters_to_search(filters, user)
     search = ''
     orgs = []
     locs = []
@@ -268,7 +268,7 @@ class MigratePermissions < ActiveRecord::Migration
     [ search, orgs, locs ]
   end
 
-  def self.filtered?(user)
+  def filtered?(user)
     user.compute_resources.present? ||
         user.domains.present? ||
         user.hostgroups.present? ||
@@ -276,7 +276,7 @@ class MigratePermissions < ActiveRecord::Migration
         user.filter_on_owner
   end
 
-  def self.clone_role(role, user)
+  def clone_role(role, user)
     clone         = role.dup
     clone.name    = role.name + "_#{user.login}"
     clone.builtin = 0
@@ -287,7 +287,7 @@ class MigratePermissions < ActiveRecord::Migration
     clone.reload
   end
 
-  def self.clone_filter(filter, role)
+  def clone_filter(filter, role)
     clone             = filter.dup
     clone.permissions = filter.permissions
     clone.role        = role
@@ -296,7 +296,7 @@ class MigratePermissions < ActiveRecord::Migration
 
   # To detect whether migration is needed we use existing models
   # fakes would always indicate that migration is needed
-  def self.old_permissions_present
+  def old_permissions_present
     user = User.new
     Role.column_names.include?('permissions') &&
         user.respond_to?(:compute_resources) &&
@@ -306,7 +306,7 @@ class MigratePermissions < ActiveRecord::Migration
         user.respond_to?(:filter_on_owner)
   end
 
-  def self.down
+  def down
     say 'Permission data migration is impossible, skipping'
   end
 end
