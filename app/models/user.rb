@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
   scope :except_hidden, lambda {
     if (hidden = AuthSourceHidden.all.select(:id)).present?
       where("#{self.table_name}.auth_source_id <> (?)", hidden).references(:users)
+    else
+      all
     end
   }
   scope :visible,         lambda { except_hidden }

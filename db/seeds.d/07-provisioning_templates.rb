@@ -1,13 +1,13 @@
 # Find known operating systems for associations
-os_junos = Operatingsystem.where(:type => "Junos") || Operatingsystem.where("name LIKE ?", "junos")
-os_solaris = Operatingsystem.where(:type => "Solaris")
-os_suse = Operatingsystem.where(:type => "Suse") || Operatingsystem.where("name LIKE ?", "suse")
-os_windows = Operatingsystem.where(:type => "Windows")
+os_junos = Operatingsystem.where(:type => "Junos").first || Operatingsystem.where("name LIKE ?", "junos").first
+os_solaris = Operatingsystem.where(:type => "Solaris").first
+os_suse = Operatingsystem.where(:type => "Suse") || Operatingsystem.where("name LIKE ?", "suse").first
+os_windows = Operatingsystem.where(:type => "Windows").first
 
 # Template kinds
 kinds = {}
 [:PXELinux, :PXEGrub, :iPXE, :provision, :finish, :script, :user_data, :ZTP].each do |type|
-  kinds[type] = TemplateKind.where(:name => type)
+  kinds[type] = TemplateKind.where(:name => type).first
   kinds[type] ||= TemplateKind.create(:name => type)
   raise "Unable to create template kind: #{format_errors kinds[type]}" if kinds[type].nil? || kinds[type].errors.any?
 end
