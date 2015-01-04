@@ -134,7 +134,7 @@ class DhcpOrchestrationTest < ActiveSupport::TestCase
       Nic::BMC.create! :host => h, :mac => "aa:aa:aa:ab:bd:bb", :ip => h.ip.succ, :domain => h.domain,
                        :subnet => h.subnet, :name => "bmc1-#{h}", :provider => 'IPMI'
     end
-    h.reload
+    h = Host.find h.id
     bmc = h.interfaces.bmc.first
     bmc.mac = bmc.mac.succ
     assert h.valid?
@@ -149,14 +149,14 @@ class DhcpOrchestrationTest < ActiveSupport::TestCase
       Nic::BMC.create!(:host => h, :mac => "aa:aa:ad:ab:bb:bb", :domain => h.domain, :subnet => h.subnet,
                        :name => "bmc-it", :provider => 'IPMI', :ip => h.ip.succ)
     end
-    h.reload
+    h = Host.find h.id
     h.mac = h.mac.succ
     bmc = h.interfaces.bmc.first
     assert !bmc.new_record?
     bmc.mac = bmc.mac.succ
     assert h.valid?
     assert bmc.valid?
-    assert_equal 2, h.queue.items.select {|x| x.action == [ h,     :set_dhcp ] }.size
+    assert_equal 1, h.queue.items.select {|x| x.action == [ h,     :set_dhcp ] }.size
     assert_equal 1, h.queue.items.select {|x| x.action == [ h.old, :del_dhcp ] }.size
     assert_equal 1, bmc.queue.items.select {|x| x.action == [ bmc,     :set_dhcp ] }.size
     assert_equal 1, bmc.queue.items.select {|x| x.action == [ bmc.old, :del_dhcp ] }.size
