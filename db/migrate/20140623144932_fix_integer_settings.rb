@@ -1,6 +1,6 @@
 class FixIntegerSettings < ActiveRecord::Migration
 
-  def self.up
+  def up
 
     Setting.where(:settings_type => 'integer').each do |s|
       if !s.value.is_a? Integer
@@ -11,6 +11,6 @@ class FixIntegerSettings < ActiveRecord::Migration
     end
   end
 
-  def self.down
+  def down
   end
 end

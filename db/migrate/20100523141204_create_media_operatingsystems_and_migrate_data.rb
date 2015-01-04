@@ -2,7 +2,7 @@ class CreateMediaOperatingsystemsAndMigrateData < ActiveRecord::Migration
 
   class Medium < ActiveRecord::Base; end
 
-  def self.up
+  def up
 
     medium_hash = Hash.new
     Medium.all.each do |medium|
@@ -27,7 +27,7 @@ class CreateMediaOperatingsystemsAndMigrateData < ActiveRecord::Migration
     Medium.reset_column_information
   end
 
-  def self.down
+  def down
     add_column :media, :operatingsystem_id, :integer
     drop_table :media_operatingsystems
   end
