@@ -1,5 +1,5 @@
 class CreateHosts < ActiveRecord::Migration
-  def self.up
+  def up
 
     # Copied from the Puppet schema to replace loading their schema directly
     create_table :hosts do |t|
@@ -14,7 +14,7 @@ class CreateHosts < ActiveRecord::Migration
       t.column :source_file_id, :integer
       t.column :created_at, :datetime
     end
-    add_index :hosts, :source_file_id, :integer => true
+    add_index :hosts, :source_file_id
     add_index :hosts, :name
 
     create_table :fact_names do |t|
@@ -31,8 +31,8 @@ class CreateHosts < ActiveRecord::Migration
       t.column :updated_at, :datetime
       t.column :created_at, :datetime
     end
-    add_index :fact_values, :fact_name_id, :integer => true
-    add_index :fact_values, :host_id, :integer => true
+    add_index :fact_values, :fact_name_id
+    add_index :fact_values, :host_id
 
     add_column :hosts, :mac, :string, :limit => 17, :default => ""
     add_column :hosts, :sp_mac, :string, :limit => 17, :default => ""
@@ -58,7 +58,7 @@ class CreateHosts < ActiveRecord::Migration
     add_column :hosts, :installed_at, :datetime
   end
 
-  def self.down
+  def down
     drop_table :hosts
     drop_table :fact_names
     drop_table :fact_values
