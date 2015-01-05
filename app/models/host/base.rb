@@ -14,7 +14,7 @@ module Host
     belongs_to :model, :counter_cache => :hosts_count
     has_many :fact_values, :dependent => :destroy, :foreign_key => :host_id
     has_many :fact_names, :through => :fact_values
-    has_many :interfaces, ->{order(:identifier)}, :dependent => :destroy, :inverse_of => :host, :class_name => 'Nic::Base',
+    has_many :interfaces, lambda {order(:identifier)}, :dependent => :destroy, :inverse_of => :host, :class_name => 'Nic::Base',
              :foreign_key => :host_id
     accepts_nested_attributes_for :interfaces, :reject_if => lambda { |a| a[:mac].blank? }, :allow_destroy => true
 
