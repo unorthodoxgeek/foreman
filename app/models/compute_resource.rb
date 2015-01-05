@@ -92,7 +92,7 @@ class ComputeResource < ActiveRecord::Base
 
   def save_vm(uuid, attr)
     vm = find_vm_by_uuid(uuid)
-    vm.attributes.merge!(attr.symbolize_keys)
+    vm.attributes.merge!(attr.deep_symbolize_keys)
     vm.save
   end
 
@@ -120,7 +120,7 @@ class ComputeResource < ActiveRecord::Base
   # returns a new fog server instance
   def new_vm(attr = {})
     test_connection
-    client.servers.new vm_instance_defaults.merge(attr.to_hash.symbolize_keys) if errors.empty?
+    client.servers.new vm_instance_defaults.merge(attr.to_hash.deep_symbolize_keys) if errors.empty?
   end
 
   # return fog new interface ( network adapter )
@@ -146,7 +146,7 @@ class ComputeResource < ActiveRecord::Base
   end
 
   def create_vm(args = {})
-    options = vm_instance_defaults.merge(args.to_hash.symbolize_keys)
+    options = vm_instance_defaults.merge(args.to_hash.deep_symbolize_keys)
     logger.debug("creating VM with the following options: #{options.inspect}")
     client.servers.create options
   end
@@ -280,7 +280,7 @@ class ComputeResource < ActiveRecord::Base
       if v[:"_delete"] == '1'  && v[:id].blank?
         nil
       else
-        v.symbolize_keys # convert to symbols deeper hashes
+        v.deep_symbolize_keys # convert to symbols deeper hashes
       end
     end.compact
   end
