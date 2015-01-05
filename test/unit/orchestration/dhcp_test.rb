@@ -122,7 +122,7 @@ class DhcpOrchestrationTest < ActiveSupport::TestCase
 
   test "when an existing host change its mac address, its dhcp record should be updated" do
     h = FactoryGirl.create(:host, :with_dhcp_orchestration)
-    h.mac = h.mac.succ
+    h.mac = (1..6).collect { "%02x" % [rand(255)] }.join(":")
     assert h.valid?
     assert_equal 2, h.queue.items.select {|x| x.action == [ h,     :set_dhcp ] }.size
     assert_equal 1, h.queue.items.select {|x| x.action == [ h.old, :del_dhcp ] }.size

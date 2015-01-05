@@ -12,6 +12,7 @@ class AddAuditsTable < ActiveRecord::Migration
       t.column :comment, :string
       t.column :auditable_parent_id, :integer
       t.column :auditable_parent_type, :string
+      t.column :request_uuid, :string
       t.column :created_at, :datetime
     end
 
