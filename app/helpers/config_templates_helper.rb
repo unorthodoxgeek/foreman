@@ -53,13 +53,13 @@ module ConfigTemplatesHelper
       ].compact
 
       actions << display_link_if_authorized(_('Unlock'), hash_for_unlock_config_template_path(:id => config_template),
-                                            {:confirm => confirm.join(" "), :style => 'color: red'})
+                                            {:data => { :confirm => confirm.join(" ") }, :style => 'color: red'})
 
     else
       actions << display_link_if_authorized(_('Lock'), hash_for_lock_config_template_path(:id => config_template))
       actions << display_delete_if_authorized(hash_for_config_template_path(:id => config_template.to_param).
          merge(:auth_object => config_template, :authorizer => authorizer, :permission => 'destroy_templates'),
-         :confirm => _("Delete %s?") % config_template)
+         :data => { :confirm => _("Delete %s?") % config_template })
     end
   end
 
