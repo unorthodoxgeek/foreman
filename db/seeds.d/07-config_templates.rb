@@ -1,8 +1,8 @@
 # Find known operating systems for associations
-os_junos = Operatingsystem.where(:type => "Junos").first || Operatingsystem.where("name LIKE ?", "junos").first
-os_solaris = Operatingsystem.where(:type => "Solaris").first
-os_suse = Operatingsystem.where(:type => "Suse") || Operatingsystem.where("name LIKE ?", "suse").first
-os_windows = Operatingsystem.where(:type => "Windows").first
+os_junos = [Operatingsystem.where(:type => "Junos").first || Operatingsystem.where("name LIKE ?", "junos").first].compact
+os_solaris = [Operatingsystem.where(:type => "Solaris").first].compact
+os_suse = [Operatingsystem.where(:type => "Suse").first || Operatingsystem.where("name LIKE ?", "suse").first].compact
+os_windows = [Operatingsystem.where(:type => "Windows").first].compact
 
 # Template kinds
 kinds = {}
@@ -60,7 +60,7 @@ ConfigTemplate.without_auditing do
     { :name => 'redhat_register', :source => 'snippets/_redhat_register.erb', :snippet => true },
     { :name => 'saltstack_minion', :source => 'snippets/_saltstack_minion.erb', :snippet => true }
   ].each do |input|
-    next if ConfigTemplate.where(:name => input[:name])
+    next if ConfigTemplate.where(:name => input[:name]).present?
     next if audit_modified? ConfigTemplate, input[:name]
 
     input.merge!(:default => true)

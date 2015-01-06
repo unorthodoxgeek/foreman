@@ -262,8 +262,9 @@ class ComputeResource < ActiveRecord::Base
     return [] unless opts
     opts = opts.dup #duplicate to prevent changing the origin opts.
     opts.delete("new_#{type}") # delete template
+    opts.delete("new_#{type}".to_sym)
     # convert our options hash into a sorted array (e.g. to preserve nic / disks order)
-    opts = opts.sort { |l, r| l[0].sub('new_','').to_i <=> r[0].sub('new_','').to_i }.map { |e| Hash[e[1]] }
+    opts = opts.sort { |l, r| l[0].to_s.sub('new_','').to_i <=> r[0].to_s.sub('new_','').to_i }.map { |e| Hash[e[1]] }
     opts.map do |v|
       if v[:"_delete"] == '1'  && v[:id].blank?
         nil
