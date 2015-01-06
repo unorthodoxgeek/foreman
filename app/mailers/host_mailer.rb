@@ -30,7 +30,9 @@ class HostMailer < ApplicationMailer
         :total => total
       }
 
-      mail(:to => user.mail, :subject => subject)
+      mail(:to   => user.mail,
+         :subject => subject,
+         :date => Time.zone.now )
     end
   end
 
