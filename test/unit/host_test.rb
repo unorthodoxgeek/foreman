@@ -804,7 +804,7 @@ context "location or organizations are not enabled" do
     g.parent = p
     g.save
     assert h.save
-    assert_present h.root_pass
+    assert h.root_pass.present?
     assert_equal p.root_pass, h.root_pass
     assert_equal p.root_pass, h.read_attribute(:root_pass), 'should copy root_pass to host'
   end
@@ -814,7 +814,7 @@ context "location or organizations are not enabled" do
     h = FactoryGirl.create(:host, :managed)
     h.root_pass = nil
     assert h.save
-    assert_present h.root_pass
+    assert h.root_pass.present?
     assert_equal Setting[:root_pass], h.root_pass
     assert_equal Setting[:root_pass], h.read_attribute(:root_pass), 'should copy root_pass to host'
   end
@@ -826,7 +826,7 @@ context "location or organizations are not enabled" do
     h.root_pass = ""
     h.save
     assert_valid h
-    assert_present h.root_pass
+    assert h.root_pass.present?
     assert_equal Setting[:root_pass], h.root_pass
     assert_equal Setting[:root_pass], h.read_attribute(:root_pass), 'should copy root_pass to host'
   end

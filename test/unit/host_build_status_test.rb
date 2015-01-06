@@ -15,7 +15,7 @@ class HostBuildStatusTest < ActiveSupport::TestCase
   end
 
   test "should be able to render a template" do
-    assert_blank build.errors[:templates]
+    assert build.errors[:templates].blank?
   end
 
   test "should fail rendering a template" do

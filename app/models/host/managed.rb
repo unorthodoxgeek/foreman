@@ -74,8 +74,8 @@ class Host::Managed < Host::Base
   #   where(conditions)
   # }
 
-  scope :recent,      lambda { |*args| {:conditions => ["last_report > ?", (args.first || (Setting[:puppet_interval] + 5).minutes.ago)]} }
-  scope :out_of_sync, lambda { |*args| {:conditions => ["last_report < ? and enabled != ?", (args.first || (Setting[:puppet_interval] + 5).minutes.ago), false]} }
+  scope :recent,      lambda { |*args| where(["last_report > ?", (args.first || (Setting[:puppet_interval] + 5).minutes.ago)]) }
+  scope :out_of_sync, lambda { |*args| where(["last_report < ? and enabled != ?", (args.first || (Setting[:puppet_interval] + 5).minutes.ago), false]) }
 
   scope :with_os, lambda { where('hosts.operatingsystem_id IS NOT NULL') }
   scope :no_location, lambda { where(:location_id => nil) }
