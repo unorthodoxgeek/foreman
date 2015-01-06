@@ -29,9 +29,7 @@ class HostMailer < ApplicationMailer
 
     set_url
     set_locale_for user
-
     mail(:to   => user.mail,
-         :from => Setting["email_reply_address"],
          :subject => subject,
          :date => Time.zone.now )
   end
