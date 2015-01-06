@@ -65,8 +65,9 @@ class Host::Managed < Host::Base
 
   attr_reader :cached_host_params
 
-  scope :recent,      lambda { |*args| {:conditions => ["last_report > ?", (args.first || (Setting[:puppet_interval] + Setting[:outofsync_interval]).minutes.ago)]} }
-  scope :out_of_sync, lambda { |*args| {:conditions => ["last_report < ? and enabled != ?", (args.first || (Setting[:puppet_interval] + Setting[:outofsync_interval]).minutes.ago), false]} }
+  scope :recent,      lambda { |*args| where(["last_report > ?", (args.first || Setting[:puppet_interval] + Setting[:outofsync_interval]).minutes.ago)]) }
+  scope :out_of_sync, lambda { |*args| where(["last_report < ? and enabled != ?", (args.first || Setting[:puppet_interval] + Setting[:outofsync_interval]).minutes.ago), false]) }
+
 
   scope :with_os, lambda { where('hosts.operatingsystem_id IS NOT NULL') }
 
