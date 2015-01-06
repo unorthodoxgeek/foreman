@@ -970,7 +970,6 @@ class HostTest < ActiveSupport::TestCase
     test "#set_interfaces updates existing physical interface" do
       host, parser = setup_host_with_nic_parser({:macaddress => '00:00:00:11:22:33', :virtual => false, :ipaddress => '10.0.0.200', :link => false})
       FactoryGirl.create(:nic_managed, :host => host, :mac => '00:00:00:11:22:33', :ip => '10.10.0.1', :link => true)
-
       assert_no_difference 'Nic::Base.count' do
         host.set_interfaces(parser)
       end
