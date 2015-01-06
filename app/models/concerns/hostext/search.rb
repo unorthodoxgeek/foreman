@@ -91,7 +91,7 @@ module Hostext
         end
         key_name = User.connection.quote_column_name(clean_key)
         condition = sanitize_sql_for_conditions(["#{key_name} #{operator} ?", value_to_sql(operator, value)])
-        users = User.all(:conditions => condition)
+        users = User.where(condition)
         hosts = users.map(&:hosts).flatten
         opts  = hosts.empty? ? "< 0" : "IN (#{hosts.map(&:id).join(',')})"
 

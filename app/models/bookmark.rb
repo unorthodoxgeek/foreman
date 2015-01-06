@@ -18,7 +18,7 @@ class Bookmark < ActiveRecord::Base
 
   scope :my_bookmarks, lambda {
     user = User.current
-    return {} unless SETTINGS[:login] and !user.nil?
+    return all unless SETTINGS[:login] and !user.nil?
 
     user       = User.current
     conditions = sanitize_sql_for_conditions(["((bookmarks.public = ?) OR (bookmarks.owner_id = ? AND bookmarks.owner_type = 'User'))", true, user.id])

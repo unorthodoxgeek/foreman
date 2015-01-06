@@ -41,7 +41,7 @@ class Puppetclass < ActiveRecord::Base
   scoped_search :in => :hosts, :on => :name, :complete_value => :true, :rename => "host", :ext_method => :search_by_host, :only_explicit => true
   scoped_search :in => :class_params, :on => :key, :complete_value => :true, :only_explicit => true
 
-  scope :not_in_any_environment, lambda { includes(:environment_classes).where(:environment_classes => {:environment_id => nil}) }
+  scope :not_in_any_environment, lambda { includes(:environment_classes).where(:environment_classes => {:environment_id => nil}).references(:environment_classes) }
 
   # returns a hash containing modules and associated classes
   def self.classes2hash(classes)

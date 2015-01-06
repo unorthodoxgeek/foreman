@@ -64,9 +64,9 @@ class NicTest < ActiveSupport::TestCase
 
   test "Nic::Managed#hostname should return blank for blank hostnames" do
     i = Nic::Managed.new :mac => "babbccddeeff00112233445566778899aabbccdd", :host => FactoryGirl.create(:host), :subnet => subnets(:one), :domain => subnets(:one).domains.first, :name => ""
-    assert_blank i.name
-    assert_present i.domain
-    assert_blank i.hostname
+    assert i.name.blank?
+    assert i.domain.present?
+    assert i.hostname.blank?
   end
 
   test "Mac address uniqueness validation is skipped for virtual NICs" do
