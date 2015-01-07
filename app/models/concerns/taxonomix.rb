@@ -66,7 +66,7 @@ module Taxonomix
     # to get correct default values
     def enforce_default
       if which_ancestry_method.nil?
-        self.limit(0).all
+        self.limit(0)
       end
     end
 
