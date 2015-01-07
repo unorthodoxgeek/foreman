@@ -139,14 +139,13 @@ module Hostext
       def search_by_params(key, operator, value)
         key_name = key.sub(/^.*\./,'')
         condition = sanitize_sql_for_conditions(["name = ? and value #{operator} ?", key_name, value_to_sql(operator, value)])
-        opts     = {:conditions => condition, :order => :priority}
-        p        = Parameter.all(opts)
+        p        = Parameter.where(conditions).order(:priority)
         return {:conditions => '1 = 0'} if p.blank?
 
         max         = p.first.priority
         condition   = sanitize_sql_for_conditions(["name = ? and NOT(value #{operator} ?) and priority > ?",key_name,value_to_sql(operator, value), max])
         negate_opts = {:conditions => condition, :order => :priority}
-        n           = Parameter.all(negate_opts)
+        n           = Parameter.where(conditions).order(:priority)
 
         conditions = param_conditions(p)
         negate = param_conditions(n)

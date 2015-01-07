@@ -51,8 +51,9 @@ module ApplicationHelper
   end
 
   def edit_habtm(klass, association, prefix = nil, options = {})
+    association_array = association.respond_to?(:to_a) ? association.to_a : association.all
     render :partial => 'common/edit_habtm', :locals =>{:prefix => prefix, :klass => klass, :options => options,
-                                                       :associations => association.all.sort.delete_if{|e| e == klass}}
+                                                       :associations => association_array.sort.delete_if{|e| e == klass}}
   end
 
   def link_to_remove_fields(name, f, options = {})

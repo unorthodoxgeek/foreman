@@ -93,7 +93,8 @@ module LayoutHelper
       JSON.parse(html_options["data-useds"]).each do |disabled_value|
         hidden_fields += f.hidden_field(attr_ids, :multiple => true, :value => disabled_value, :id=>'' )
       end
-      hidden_fields + f.collection_select(attr_ids, associations.all.sort_by { |a| a.to_s },
+      association_array = associations.respond_to?(:to_a) ? associations.to_a : associations.all
+      hidden_fields + f.collection_select(attr_ids, association_array.sort_by { |a| a.to_s },
                                           :id, :to_label, options.merge(:selected => selected_ids),
                                           html_options.merge(:multiple => true))
     end
