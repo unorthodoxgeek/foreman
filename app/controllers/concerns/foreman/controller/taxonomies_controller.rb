@@ -197,8 +197,4 @@ module Foreman::Controller::TaxonomiesController
     @count_nil_hosts = Host.where(taxonomy_id => nil).count
   end
 
-  def taxonomy_params
-    params.permit(:id, :organization => [:name])
-  end
-
 end
