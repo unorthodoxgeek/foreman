@@ -551,14 +551,23 @@ class HostTest < ActiveSupport::TestCase
       assert host.valid?
     end
 
+<<<<<<< HEAD
     test "should not save if owner_type is not User or Usergroup" do
       host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "3.3.4.03", :medium => media(:one),
         :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:two), :puppet_proxy => smart_proxies(:puppetmaster),
         :subnet => subnets(:two), :architecture => architectures(:x86_64), :environment => environments(:production), :managed => true,
         :owner_type => "UserGr(up" # should be Usergroup
+=======
+  test "should not save if IP is not in the right subnet" do
+    if unattended?
+      host = Host.create :name => "myfullhost", :mac => "aabbecddeeff", :ip => "123.05.02.03", :ptable => ptables(:one),
+        :domain => domains(:mydomain), :operatingsystem => Operatingsystem.first, :subnet => subnets(:one), :managed => true, :medium => media(:one),
+        :architecture => Architecture.first, :environment => Environment.first, :puppet_proxy => smart_proxies(:puppetmaster)
+>>>>>>> rails 4.1.5
       assert !host.valid?
     end
 
+<<<<<<< HEAD
     test "should not save if installation media is missing" do
       host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "3.3.4.03", :ptable => FactoryGirl.create(:ptable),
         :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:two), :puppet_proxy => smart_proxies(:puppetmaster),
@@ -655,6 +664,101 @@ class HostTest < ActiveSupport::TestCase
       host.save
       assert host.disabled?
     end
+=======
+  test "should save if owner_type is User or Usergroup" do
+    host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "2.3.4.03", :ptable => ptables(:one), :medium => media(:one),
+      :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:one), :puppet_proxy => smart_proxies(:puppetmaster),
+      :architecture => architectures(:x86_64), :environment => environments(:production), :managed => true,
+      :owner_type => "User", :root_pass => "xybxa6JUkz63w"
+    assert host.valid?
+  end
+
+  test "should not save if owner_type is not User or Usergroup" do
+    host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "2.3.4.03", :medium => media(:one),
+      :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:one), :puppet_proxy => smart_proxies(:puppetmaster),
+      :architecture => architectures(:x86_64), :environment => environments(:production), :managed => true,
+      :owner_type => "UserGr(up" # should be Usergroup
+    assert !host.valid?
+  end
+
+  test "should not save if installation media is missing" do
+    host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "2.3.4.03", :ptable => ptables(:one),
+      :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:one), :puppet_proxy => smart_proxies(:puppetmaster),
+      :architecture => architectures(:x86_64), :environment => environments(:production), :managed => true, :build => true,
+      :owner_type => "User", :root_pass => "xybxa6JUkz63w"
+    refute host.valid?
+    assert_equal "can't be blank", host.errors[:medium_id][0]
+  end
+
+  test "should save if owner_type is empty and Host is unmanaged" do
+    host = Host.new :name => "myfullhost", :mac => "aabbecddeeff", :ip => "2.3.4.03", :medium => media(:one),
+      :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:one), :puppet_proxy => smart_proxies(:puppetmaster),
+      :architecture => architectures(:x86_64), :environment => environments(:production), :managed => false
+    assert host.valid?
+  end
+
+  test "should import from external nodes output" do
+    Setting[:Parametrized_Classes_in_ENC] = true
+    Setting[:Enable_Smart_Variables_in_ENC] = true
+    # create a dummy node
+    Setting[:Parametrized_Classes_in_ENC] = true
+    Parameter.destroy_all
+    host = Host.create :name => "myfullhost", :mac => "aabbacddeeff", :ip => "2.3.4.12", :medium => media(:one),
+      :domain => domains(:mydomain), :operatingsystem => operatingsystems(:redhat), :subnet => subnets(:one),
+      :architecture => architectures(:x86_64), :environment => environments(:production), :disk => "aaa",
+      :puppet_proxy => smart_proxies(:puppetmaster)
+
+    # dummy external node info
+    nodeinfo = {"environment" => "production",
+      "parameters"=> {"puppetmaster"=>"puppet", "MYVAR"=>"value", "port" => "80",
+        "ssl_port" => "443", "foreman_env"=> "production", "owner_name"=>"Admin User",
+        "root_pw"=>"xybxa6JUkz63w", "owner_email"=>"admin@someware.com",
+        "foreman_subnets"=>
+          [{"network"=>"2.3.4.0",
+            "name"=>"one",
+            "gateway"=>nil,
+            "mask"=>"255.255.255.0",
+            "dns_primary"=>nil,
+            "dns_secondary"=>nil,
+            "from"=>nil,
+            "to"=>nil,
+            "boot_mode"=>"Static",
+            "ipam"=>"DHCP"}],
+         "foreman_interfaces"=>
+          [{"mac"=>"aa:bb:ac:dd:ee:ff",
+            "ip"=>"2.3.4.12",
+            "type"=>"Interface",
+            "name"=>'myfullhost.mydomain.net',
+            "attrs"=>{},
+            "virtual"=>false,
+            "link"=>true,
+            "identifier"=>nil,
+            "managed"=>true,
+            "primary"=>true,
+            "provision"=>true,
+            "subnet"=> {"network"=>"2.3.4.0",
+                        "mask"=>"255.255.255.0",
+                        "name"=>"one",
+                        "gateway"=>nil,
+                        "dns_primary"=>nil,
+                        "dns_secondary"=>nil,
+                        "from"=>nil,
+                        "to"=>nil,
+                        "boot_mode"=>"Static",
+                        "ipam"=>"DHCP"}}]},
+      "classes"=>{"apache"=>{"custom_class_param"=>"abcdef"}, "base"=>{"cluster"=>"secret"}} }
+
+    host.importNode nodeinfo
+    nodeinfo["parameters"]["special_info"] = "secret"  # smart variable on apache
+
+    assert_equal nodeinfo, host.info
+  end
+
+  test "show be enabled by default" do
+    host = Host.create :name => "myhost", :mac => "aabbccddeeff"
+    assert host.enabled?
+  end
+>>>>>>> rails 4.1.5
 
     test "a fqdn Host should be assigned to a domain if such domain exists" do
       domain = domains(:mydomain)

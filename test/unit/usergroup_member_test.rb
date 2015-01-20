@@ -5,7 +5,7 @@ class UsergroupMemberTest < ActiveSupport::TestCase
     setup_admins_scenario
     assert_includes @superadmin_user.cached_user_roles.map(&:role), @semiadmin_role
 
-    @superadmins.users.clear
+    @superadmins.users.destroy_all
 
     assert_not_includes @superadmin_user.reload.cached_user_roles.map(&:role), @semiadmin_role
     cached_usergroups = @superadmin_user.cached_usergroups
@@ -55,7 +55,7 @@ class UsergroupMemberTest < ActiveSupport::TestCase
     assert_includes @admin_user.cached_user_roles.map(&:role), @semiadmin_role
     assert_includes @superadmin_user.cached_user_roles.map(&:role), @semiadmin_role
 
-    @semiadmins.usergroups.clear
+    @semiadmins.usergroups.destroy_all
     [@semiadmin_user, @admin_user, @superadmin_user].map(&:reload)
 
     assert_includes @semiadmin_user.cached_user_roles.map(&:role), @semiadmin_role
@@ -81,8 +81,13 @@ class UsergroupMemberTest < ActiveSupport::TestCase
     assert_includes @admin_user.cached_user_roles.map(&:role), @semiadmin_role
     assert_includes @superadmin_user.cached_user_roles.map(&:role), @semiadmin_role
 
+<<<<<<< HEAD
     @admins.usergroups.clear
     [@semiadmin_user, @admin_user, @superadmin_user].map(&:reload)
+=======
+    @admins.usergroups.destroy_all
+    @semiadmin_user.reload; @admin_user.reload; @superadmin_user.reload
+>>>>>>> rails 4.1.5
 
     assert_includes @semiadmin_user.cached_user_roles.map(&:role), @semiadmin_role
     assert_includes @admin_user.cached_user_roles.map(&:role), @admin_role

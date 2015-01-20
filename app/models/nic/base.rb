@@ -3,6 +3,7 @@
 module Nic
   class Base < ActiveRecord::Base
     include Foreman::STI
+    cattr_accessor :allowed_types
 
     self.table_name = 'nics'
 
@@ -84,16 +85,14 @@ module Nic
     end
 
     def self.type_by_name(name)
+      self.allowed_types ||= []
       allowed_types.find { |nic_class| nic_class.humanized_name.downcase == name.to_s.downcase }
     end
 
     # NIC types have to be registered to to expose them to users
     def self.register_type(type)
-      allowed_types << type
-    end
-
-    def self.allowed_types
-      @allowed_types ||= []
+      self.allowed_types ||= []
+      self.allowed_types << type
     end
 
     # after every name change, we synchronize it to host object
