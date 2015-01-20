@@ -24,7 +24,7 @@ class Host::Managed < Host::Base
   def self.complete_for(query, opts = {})
     matcher = /(\s*(?:(?:user\.[a-z]+)|owner)\s*[=~])\s*(\S*)\s*\z/
     matches = matcher.match(query)
-    output = super(query, opts)
+    output = super
     if matches.present? && 'current_user'.starts_with?(matches[2])
       current_user_result = query.sub(matcher, '\1 current_user')
       output = [current_user_result] + output
