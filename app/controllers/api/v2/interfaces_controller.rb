@@ -6,7 +6,6 @@ module Api
       include Api::Version2
       include Api::TaxonomyScope
 
-      ALLOWED_TYPE_NAMES = Nic::Base.allowed_types.map{ |t| t.humanized_name.downcase }
       LEGACY_TYPE_NAMES = Nic::Base.allowed_types.map{ |t| t.name }
 
       before_filter :find_required_nested_object, :only => [:index, :show, :create, :destroy]
@@ -38,7 +37,7 @@ module Api
           #common parameters
           param :mac, String, :required => true, :desc => N_("MAC address of interface")
           param :ip, String, :required => true, :desc => N_("IP address of interface")
-          param :type, InterfacesController::ALLOWED_TYPE_NAMES, :required => true, :desc => N_("Interface type, e.g: bmc")
+          param :type, String, :required => true, :desc => N_("Interface type, e.g: bmc")
           param :name, String, :required => true, :desc => N_("Interface name")
           param :subnet_id, Fixnum, :desc => N_("Foreman subnet ID of interface")
           param :domain_id, Fixnum, :desc => N_("Foreman domain ID of interface")
@@ -98,17 +97,21 @@ module Api
       def convert_type
         type_sent = params[:interface][:type]
 
-        if ALLOWED_TYPE_NAMES.include? type_sent
+        if allowed_type_names.include? type_sent
           # convert human readable name to the NIC's class name
           params[:interface][:type] = Nic::Base.type_by_name(type_sent).to_s
-        elsif !LEGACY_TYPE_NAMES.include? type_sent
+        elsif !Nic::Base.allowed_types.map(&:name).include? type_sent
           # enable sending class names directly to keep backward compatibility
           render_error :custom_error,
             :status => :unprocessable_entity,
             :locals => {
-              :message => _("Unknown interface type, must be one of [%s]") % ALLOWED_TYPE_NAMES.join(', ')
+              :message => _("Unknown interface type, must be one of [%s]") % allowed_type_names.join(', ')
             }
         end
+      end
+
+      def allowed_type_names
+        Nic::Base.allowed_types.map{ |t| t.humanized_name.downcase }
       end
     end
   end

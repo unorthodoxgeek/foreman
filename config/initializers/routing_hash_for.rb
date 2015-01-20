@@ -1,4 +1,4 @@
-module ActionController
+module ActionDispatch
   module Routing
     class RouteSet
       class NamedRouteCollection
