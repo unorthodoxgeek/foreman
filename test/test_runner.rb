@@ -30,4 +30,4 @@ class ForemanMiniTest < MiniTest::Unit
 
 end
 
-MiniTest::Unit.runner = ForemanMiniTest.new
+#MiniTest::Unit.runner = ForemanMiniTest.new

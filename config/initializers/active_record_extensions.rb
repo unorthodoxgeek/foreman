@@ -5,6 +5,24 @@ class ActiveRecord::Base
   include Parameterizable::ById
 end
 
+module ActiveRecord
+  # = Active Record \Named \Scopes
+  module Scoping
+    module Named
+
+      module ClassMethods
+        def all(*args)
+          if current_scope
+            current_scope.clone
+          else
+            default_scoped
+          end
+        end
+      end
+    end
+  end
+end
+
 
 #this fixes annoying issue with custom counter cache column names
 module ActiveRecord::Associations::Builder

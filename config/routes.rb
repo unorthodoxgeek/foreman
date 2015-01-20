@@ -360,7 +360,7 @@ Foreman::Application.routes.draw do
   get 'unattended/provision/:metadata', :controller => 'unattended', :action => 'provision', :format => 'html',
     :constraints => { :metadata => /(autoinstall\.scm|vm-profile\.scm|pkg-groups\.tar)/ }
   # match for all unattended scripts
-  get 'unattended/(:action/(:id(.format)))', :controller => 'unattended'
+  get 'unattended/(:action/(:id(.:format)))', :controller => 'unattended'
 
   resources :tasks, :only => [:show]
 
