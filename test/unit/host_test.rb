@@ -2087,7 +2087,7 @@ class HostTest < ActiveSupport::TestCase
   test '#drop_primary_interface_cache' do
     host = FactoryGirl.create(:host, :managed)
     refute_nil host.primary_interface
-    host.interfaces = []
+    host.interfaces.clear
     # existing host must cache interface
     refute_nil host.primary_interface
     host.drop_primary_interface_cache
@@ -2097,7 +2097,7 @@ class HostTest < ActiveSupport::TestCase
   test '#drop_provision_interface_cache' do
     host = FactoryGirl.create(:host, :managed)
     refute_nil host.provision_interface
-    host.interfaces = []
+    host.interfaces.clear
     # existing host must cache interface
     refute_nil host.provision_interface
     host.drop_provision_interface_cache
