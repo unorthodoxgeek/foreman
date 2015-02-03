@@ -189,8 +189,8 @@ class DhcpOrchestrationTest < ActiveSupport::TestCase
     bmc.mac = next_mac(bmc.mac)
     assert h.valid?
     assert bmc.valid?
-    assert_equal 2, h.queue.items.select {|x| x.action == [ h.primary_interface, :set_dhcp ] }.size
-    assert_equal 1, h.queue.items.select {|x| x.action.last == :del_dhcp }.size
+    assert_equal 1, h.queue.items.select {|x| x.action == [ h.primary_interface, :set_dhcp ] }.size
+    assert_equal 2, h.queue.items.select {|x| x.action.last == :del_dhcp }.size
     assert_equal 1, bmc.queue.items.select {|x| x.action == [ bmc,     :set_dhcp ] }.size
     assert_equal 1, bmc.queue.items.select {|x| x.action == [ bmc.old, :del_dhcp ] }.size
   end

@@ -617,13 +617,13 @@ class HostsController < ApplicationController
 
   def set_host_type
     return unless params[:host] and params[:host][:type]
-    type = params[:host].delete(:type) #important, otherwise mass assignment will save the type.
-    if type.constantize.new.is_a?(Host::Base)
+    type = params[:host][:type]
+    if (type.constantize rescue false) && type.constantize.new.kind_of?(Host::Base)
       @host      = @host.becomes(type.constantize)
       @host.type = type
     else
       error _("invalid type: %s requested") % (type)
-      render :unprocessable_entity
+      render :text => "", :status => :unprocessable_entity
     end
   rescue => e
     error _("Something went wrong while changing host type - %s") % (e)
