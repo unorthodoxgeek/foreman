@@ -4,7 +4,7 @@ group :test do
   gem 'spork-minitest', '0.0.3'
   gem 'single_test', '~> 0.6'
   gem 'minitest', '~> 5.1'
-  gem 'minitest-spec-rails'#, '~> 4.7'
+  gem 'minitest-spec-rails' #, '~> 4.7'
   gem 'ci_reporter', '>= 1.6.3', '< 2.0.0', :require => false
   gem 'capybara', '~> 2.0'
   gem 'database_cleaner', '~> 1.3'

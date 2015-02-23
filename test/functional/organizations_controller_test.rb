@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class OrganizationsControllerTest < ActionController::TestCase
-
   test "should get index" do
     Taxonomy.delete_all
     get :index, {}, set_session_user

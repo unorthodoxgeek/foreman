@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AboutIntegrationTest < ActionDispatch::IntegrationTest
-
   test "about page" do
     visit about_index_path
     assert_index_page(about_index_path,"About", nil, false, false)

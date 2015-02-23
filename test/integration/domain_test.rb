@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class DomainIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(domains_path,"Domains","New Domain")
   end

@@ -431,7 +431,6 @@ class UserTest < ActiveSupport::TestCase
   test "role_ids can be empty array which removes all roles" do
     user   = users(:one)
     foobar = Role.find_or_create_by(:name => "foobar")
-    barfoo = Role.find_or_create_by(:name => "barfoo")
     user.roles << foobar
 
     user.role_ids = []
@@ -441,7 +440,6 @@ class UserTest < ActiveSupport::TestCase
   test "role_ids can be nil resulting in no role" do
     user   = users(:one)
     foobar = Role.find_or_create_by(:name => "foobar")
-    barfoo = Role.find_or_create_by(:name => "barfoo")
     user.roles << foobar
 
     user.role_ids = nil

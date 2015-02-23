@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class FactValueIntegrationTest < ActionDispatch::IntegrationTest
-
   def setup
     @host = FactoryGirl.create(:host)
     @fact_name = FactoryGirl.create(:fact_name)

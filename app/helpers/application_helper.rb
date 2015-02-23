@@ -32,7 +32,7 @@ module ApplicationHelper
     end
   end
 
-  def link_to_function(name, function, html_options={})
+  def link_to_function(name, function, html_options = {})
     onclick = "#{"#{html_options[:onclick]}; " if html_options[:onclick]}#{function}; return false;"
     href = html_options[:href] || '#'
 

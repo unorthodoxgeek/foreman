@@ -1,5 +1,4 @@
 class UserMailNotification < ActiveRecord::Base
-
   belongs_to :user
   belongs_to :mail_notification
 

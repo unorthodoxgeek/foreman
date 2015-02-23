@@ -117,7 +117,7 @@ class OperatingsystemsControllerTest < ActionController::TestCase
       assert_difference 'OsDefaultTemplate.count', -1 do
         os_default_template_id = operatingsystem.os_default_templates.first.id
         put :update, {:id => operatingsystem.id,
-                      :operatingsystem => {:os_default_templates_attributes => {0 => { :id => os_default_template_id, :provisioning_template_id => '', :template_kind_id => @template_kind.id }}}}, set_session_user
+                      :operatingsystem => {:os_default_templates_attributes => [{ :id => os_default_template_id, :provisioning_template_id => '', :template_kind_id => @template_kind.id }]}}, set_session_user
       end
     end
   end
