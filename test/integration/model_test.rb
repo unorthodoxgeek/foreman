@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ModelIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(models_path,"Hardware Models","New Model")
   end

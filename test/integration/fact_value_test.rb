@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class FactValueIntegrationTest < ActionDispatch::IntegrationTest
-
   def setup
     @host = FactoryGirl.create(:host)
     FactoryGirl.create(:fact_value, :value => '2.6.9',:host => @host,

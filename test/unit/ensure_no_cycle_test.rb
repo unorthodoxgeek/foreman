@@ -12,7 +12,7 @@ class EnsureNoCycleTest < ActiveSupport::TestCase
   end
 
   #apparently, ActiveModel::Errors calls that...
-  def OpenStruct.i18n_scope
+  def self.i18n_scope
     :en
   end
 

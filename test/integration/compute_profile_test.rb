@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ComputeProfileIntegrationTest < ActionDispatch::IntegrationTest
-
   setup do
     Fog.mock!
   end

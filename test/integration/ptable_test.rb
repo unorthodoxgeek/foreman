@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class PtableIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(ptables_path,"Partition Tables","New Partition Table")
   end

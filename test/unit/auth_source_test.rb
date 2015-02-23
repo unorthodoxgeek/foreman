@@ -28,6 +28,5 @@ class AuthSourceTest < ActiveSupport::TestCase
 
     assert_equal "Abstract", @auth_source.auth_method_name
   end
-
 end
 

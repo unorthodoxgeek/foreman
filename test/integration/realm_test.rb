@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class RealmIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(realms_path,"Realms","New Realm")
   end

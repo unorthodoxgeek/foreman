@@ -42,5 +42,4 @@ class TestableStrongParamsControllerTest < ActionController::TestCase
     post :create, { :testable_strong_param => { :name => "para", :value => "meter", :hidden_value => true } }, set_session_user
     assert_response :ok
   end
-
 end

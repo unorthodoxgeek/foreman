@@ -377,7 +377,6 @@ class HostsController < ApplicationController
     else
       notice _("%s Parameters updated, see below for more information") % (counter)
     end
-
   end
 
   def select_multiple_hostgroup
@@ -618,7 +617,7 @@ class HostsController < ApplicationController
   def set_host_type
     return unless params[:host] and params[:host][:type]
     type = params[:host][:type]
-    if (type.constantize rescue false) && type.constantize.new.kind_of?(Host::Base)
+    if (type.constantize rescue false) && type.constantize.new.is_a?(Host::Base)
       @host      = @host.becomes(type.constantize)
       @host.type = type
     else

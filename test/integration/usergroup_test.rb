@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UsergroupIntegrationTest < ActionDispatch::IntegrationTest
-
   def setup
     as_admin { FactoryGirl.create(:usergroup, :name => "Admins") }
   end
