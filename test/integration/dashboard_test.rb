@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class DashboardIntegrationTest < ActionDispatch::IntegrationTest
-
   def setup
     FactoryGirl.create(:host)
   end

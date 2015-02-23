@@ -25,7 +25,6 @@ module Parameterizable
       def self.from_param(id)
         self.where(:id => id.to_i).first
       end
-
     end
   end
 
@@ -65,7 +64,6 @@ module Parameterizable
           self.where(:name => name).first
         end
       end
-
     end
   end
 end

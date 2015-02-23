@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(users_path,"Users","New User")
   end

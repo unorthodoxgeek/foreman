@@ -9,7 +9,6 @@ module ActiveRecord
   # = Active Record \Named \Scopes
   module Scoping
     module Named
-
       module ClassMethods
         def all(*args)
           if current_scope

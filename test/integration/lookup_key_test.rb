@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class LookupKeyIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(lookup_keys_path,"Smart variables",false)
   end

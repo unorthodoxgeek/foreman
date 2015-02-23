@@ -118,7 +118,6 @@ class OperatingsystemsControllerTest < ActionController::TestCase
         os_default_template_id = operatingsystem.os_default_templates.first.id
         put :update, {:id => operatingsystem.id,
                       :operatingsystem => {:os_default_templates_attributes => [{ :id => os_default_template_id, :config_template_id => '', :template_kind_id => @template_kind.id }] }}, set_session_user
-
       end
     end
   end

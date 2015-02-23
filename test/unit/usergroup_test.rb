@@ -54,7 +54,6 @@ class UsergroupTest < ActiveSupport::TestCase
 
   test "hosts should be retrieved from recursive/complex usergroup definitions" do
     populate_usergroups
-    domain = domains(:mydomain)
     disable_orchestration
 
     @h1 = FactoryGirl.create(:host, :owner => @u1)

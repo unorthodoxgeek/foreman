@@ -11,7 +11,6 @@ module StrongParametersHelper
 
   delegate(*(Foreman::PermittedAttributes::ATTRIBUTES + [{:to => :permitted_attributes, :prefix => :permitted}]))
 
-
   def permitted_operatingsystem_attributes
     permitted_attributes.operatingsystem_attributes +
         [
@@ -35,7 +34,6 @@ module StrongParametersHelper
   def permitted_compute_attribute_attributes
     permitted_attributes.compute_attribute_attributes +
         [:vm_attrs => vm_attributes]
-
   end
 
   def permitted_config_template_attributes

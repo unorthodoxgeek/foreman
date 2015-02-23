@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class EnvironmentIntegrationTest < ActionDispatch::IntegrationTest
-
   test "index page" do
     assert_index_page(environments_path,"Environments","New Puppet Environment")
   end

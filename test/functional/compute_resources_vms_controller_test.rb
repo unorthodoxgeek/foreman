@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ComputeResourcesVmsControllerTest < ActionController::TestCase
-
   before do
     @compute_resource = compute_resources(:mycompute)
     @your_compute_resource = compute_resources(:yourcompute)
