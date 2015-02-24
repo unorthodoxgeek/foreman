@@ -45,7 +45,7 @@ class HostsController < ApplicationController
         @hostgroup_authorizer = Authorizer.new(User.current, :collection => @hosts.map(&:hostgroup_id).compact.uniq)
         render :index if title and (@title = title)
       end
-      format.yaml { render :text => search.all(:select => "hosts.name").map(&:name).to_yaml }
+      format.yaml { render :text => search.where(:select => "hosts.name").all.map(&:name).to_yaml }
       format.json
     end
   end
