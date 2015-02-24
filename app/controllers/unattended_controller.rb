@@ -59,9 +59,9 @@ class UnattendedController < ApplicationController
 
   # Generate an action for each template kind
   # i.e. /unattended/provision will render the provisioning template for the requesting host
-  TemplateKind.all.each do |kind|
-    define_method kind.name do
-      render_template kind.name
+  TemplateKind.all.map(&:name).each do |name|
+    define_method name do
+      render_template name
     end
   end
   # Using alias_method causes test failures as iPXE method is unknown in an empty DB

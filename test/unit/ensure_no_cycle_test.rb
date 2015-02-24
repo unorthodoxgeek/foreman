@@ -1,5 +1,9 @@
 require 'test_helper'
 
+def OpenStruct.i18n_scope
+  :en
+end
+
 class EnsureNoCycleTest < ActiveSupport::TestCase
   def setup
     base = []
