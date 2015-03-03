@@ -323,6 +323,7 @@ end
 Spork.each_run do
   # This code will be run each time you run your specs.
   class ActionController::TestCase
+    self.use_transactional_fixtures = true
     setup :setup_set_script_name, :set_api_user, :reset_setting_cache, :turn_of_login
     teardown :reset_setting_cache, :remove_raise_strong_parameters
 
@@ -357,6 +358,7 @@ Spork.each_run do
   end
 
   class ActionDispatch::IntegrationTest
+    self.use_transactional_fixtures = true
     setup :login_admin
 
     teardown do
