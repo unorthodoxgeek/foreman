@@ -5,9 +5,13 @@ class ApplicationMailerTest < ActiveSupport::TestCase
     ActionMailer::Base.deliveries = []
     Setting[:email_subject_prefix] = '[foreman-production]'
 
-    ApplicationMailer.mail(:to => 'nobody@example.com', :subject => 'Danger, Will Robinson!') do |mail|
-      format.text "This is a test mail."
-    end.deliver
+    User.current = users :admin
+
+    @options = {}
+    @options[:env] = @env
+    @options[:user] = User.current.id
+
+    HostMailer.summary(@options).deliver
 
     @mail = ActionMailer::Base.deliveries.first
   end
