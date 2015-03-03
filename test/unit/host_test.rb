@@ -486,8 +486,8 @@ class HostTest < ActiveSupport::TestCase
     test "should save if root password is undefined when the host is managed and in build mode" do
       Setting[:root_pass] = ''
       host = Host.new :name => "myfullhost", :managed => true, :build => false
-      refute host.valid?
-      assert host.errors[:root_pass].present?
+      host.valid?
+      refute host.errors[:root_pass].present?
     end
 
     test "should save if root password is undefined when the compute resource is image capable and in build mode" do
@@ -500,7 +500,7 @@ class HostTest < ActiveSupport::TestCase
       Setting[:root_pass] = ''
       host = Host.new :name => "myfullhost", :managed => true, :build => true
       refute host.valid?
-      assert_present host.errors[:root_pass]
+      assert host.errors[:root_pass].present?
     end
 
     test "should not save if neither ptable or disk are defined when the host is managed" do
@@ -755,6 +755,10 @@ class HostTest < ActiveSupport::TestCase
     test "if the user toggles off the use_uuid_for_certificates option, revoke the UUID and autosign the hostname" do
       h = FactoryGirl.create(:host, :with_puppet_orchestration)
       Setting[:manage_puppetca] = true
+
+      ProxyAPI::Puppetca.any_instance.expects(:del_certificate).returns(true)
+      ProxyAPI::Puppetca.any_instance.expects(:set_autosign).returns(true)
+
       assert h.puppetca?
       assert h.handle_ca
       assert_equal h.certname, h.name
@@ -1218,8 +1222,8 @@ class HostTest < ActiveSupport::TestCase
       host.primary_interface.identifier = 'eth0'
       nic = host.interfaces.build(:identifier => 'eth0')
       refute host.valid?
-      assert_present nic.errors[:identifier]
-      assert_present host.errors[:interfaces]
+      assert nic.errors[:identifier].present?
+      assert host.errors[:interfaces].present?
       nic.identifier = 'eth1'
       host.valid?
       refute_includes nic.errors.keys, :identifier
