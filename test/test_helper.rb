@@ -59,8 +59,19 @@ Spork.prefork do
   end
 
   class ActiveSupport::TestCase
+    require 'active_record/fixtures'
+
+    def generate_all_fixtures!
+      fixtures_dir = File.join(Rails.root, '/test/fixtures') #change '/spec/fixtures' to match your fixtures location
+      Dir.glob(File.join(fixtures_dir,'*.yml')).each do |file|
+        base_name = File.basename(file, '.*')
+        ActiveRecord::FixtureSet.create_fixtures(fixtures_dir, base_name)
+      end
+    end
+
     before do
       User.current = nil
+      generate_all_fixtures!
     end
 
     def self.test_order
