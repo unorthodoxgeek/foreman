@@ -134,6 +134,7 @@ module Foreman
 
     @@user_attributes = [
       :login,
+      :admin,
       :auth_source_id,
       {:role_ids => [],
       :hostgroup_ids => []},
