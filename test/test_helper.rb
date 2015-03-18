@@ -363,7 +363,7 @@ Spork.each_run do
   end
 
   class ActionDispatch::IntegrationTest
-    self.use_transactional_fixtures = true
+    self.use_transactional_fixtures = false
     setup :login_admin
 
     teardown do

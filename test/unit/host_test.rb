@@ -710,6 +710,10 @@ class HostTest < ActiveSupport::TestCase
     test "if the user toggles off the use_uuid_for_certificates option, revoke the UUID and autosign the hostname" do
       h = FactoryGirl.create(:host, :with_puppet_orchestration)
       Setting[:manage_puppetca] = true
+
+      ProxyAPI::Puppetca.any_instance.expects(:del_certificate).returns(true)
+      ProxyAPI::Puppetca.any_instance.expects(:set_autosign).returns(true)
+
       assert h.puppetca?
       assert h.handle_ca
       assert_equal h.certname, h.name
