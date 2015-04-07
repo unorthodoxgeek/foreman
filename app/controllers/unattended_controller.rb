@@ -59,7 +59,7 @@ class UnattendedController < ApplicationController
 
   # Generate an action for each template kind
   # i.e. /unattended/provision will render the provisioning template for the requesting host
-  ["PXEGrub", "PXELinux", "script", "finish", "iPXE", "provision"].each do |name|
+  TemplateKind.all.map(&:name).each do |name|
     define_method name do
       render_template name
     end

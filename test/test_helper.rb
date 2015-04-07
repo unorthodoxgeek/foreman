@@ -269,6 +269,17 @@ Spork.prefork do
     # Make the Capybara DSL available in all integration tests
     include Capybara::DSL
 
+    before do
+
+      TemplateKind.all.map(&:name).each do |name|
+        UnattendedController.class_eval do
+          define_method name do
+            render_template name
+          end
+        end
+      end
+    end
+
     # Stop ActiveRecord from wrapping tests in transactions
     self.use_transactional_fixtures = false
 

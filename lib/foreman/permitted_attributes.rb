@@ -220,7 +220,7 @@ module Foreman
     ]
 
     @@interface_attributes = [
-      :name, :ip, :mac, :username, :password, :provider, :type
+      :name, :ip, :mac, :username, :password, :provider, :type, :primary
     ]
 
     @@lookup_key_attributes = [
