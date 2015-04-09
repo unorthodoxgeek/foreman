@@ -1138,8 +1138,8 @@ class HostTest < ActiveSupport::TestCase
       host.primary_interface.identifier = 'eth0'
       nic = host.interfaces.build(:identifier => 'eth0')
       refute host.valid?
-      assert_present nic.errors[:identifier]
-      assert_present host.errors[:interfaces]
+      assert nic.errors[:identifier].present?
+      assert host.errors[:interfaces].present?
       nic.identifier = 'eth1'
       host.valid?
       refute_includes nic.errors.keys, :identifier
