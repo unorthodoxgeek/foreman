@@ -200,7 +200,8 @@ module Foreman #:nodoc:
     end
 
     def pending_migrations
-      migrations = ActiveRecord::Migrator.new(:up, ActiveRecord::Migrator.migrations_paths).pending_migrations
+      # This should change back from ActiveRecord::Migrator.migrations('db/migrate') to ActiveRecord::Migrator.migrations_paths when we use rails 4.1.7
+      migrations = ActiveRecord::Migrator.new(:up, ActiveRecord::Migrator.migrations('db/migrate')).pending_migrations
       migrations.size > 0
     end
 
