@@ -7,6 +7,10 @@ $(function() {
   $('.tabs-left .col-md-4').removeClass('col-md-4').addClass('col-md-8')
   //remove variable click event
   $(document).on('click', '.smart-var-tabs li a span', function(){ remove_node(this);});
+  fill_in_matchers();
+  $('#smart_class_param').parents('form').on('submit', function(){
+    build_match();
+  })
 })
 
 function select_first_tab(){
@@ -65,7 +69,6 @@ function add_child_node(item) {
     content = fix_template_context(content, context);
     var new_id = new Date().getTime();
     content = fix_template_names(content, assoc, new_id);
-
     var field   = '';
     if (assoc == 'lookup_keys') {
       $('#smart_vars .smart-var-tabs .active, #smart_vars .stacked-content .active').removeClass('active');
@@ -79,6 +82,7 @@ function add_child_node(item) {
     $(item).closest("form").trigger({type: 'nested:fieldAdded', field: field});
     $('a[rel="popover"]').popover({html: true});
     $('a[rel="twipsy"]').tooltip();
+
     return new_id;
 }
 
@@ -191,12 +195,12 @@ function toggleUsePuppetDefaultValue(item, value_field) {
 
 function filterByEnvironment(item){
   if ($(item).val()=="") {
-    $('ul.smart-var-tabs li[data-used-environments] a').removeClass('text-muted');
+    $('ul.smart-var-tabs li[data-used-environments] a').removeClass('hide');
     return;
   }
   var selected = $(item).find('option:selected').text();
-  $('ul.smart-var-tabs li[data-used-environments] a').addClass('text-muted');
-  $('ul.smart-var-tabs li[data-used-environments*="'+selected+'"] a').removeClass('text-muted');
+  $('ul.smart-var-tabs li[data-used-environments] a').addClass('hide');
+  $('ul.smart-var-tabs li[data-used-environments*="'+selected+'"] a').removeClass('hide');
 }
 
 function filterByClassParam(item) {
@@ -215,3 +219,53 @@ function validatorTypeSelected(item){
   var validator_rule_field = $(item).closest('.fields').find("[id$='_validator_rule']");
   validator_rule_field.attr('disabled', validatorType == "" ? 'disabled' : null);
 }
+
+KEY_DELM = ",";
+EQ_DELM  = "=";
+
+function match_to_key_value(match){
+  splited_matcher = match.replace(/ /g,'').split(/[,=]/);
+  keys = splited_matcher.filter(function(val, i) { if (i%2==0) { return val }});
+  values = splited_matcher.filter(function(val, i) { if (i%2==1) { return val }});
+
+  return [keys.join(KEY_DELM), values.join(KEY_DELM)];
+}
+
+function key_value_to_match(keys, values){
+  match = "";
+  keys.split(KEY_DELM).forEach(function (el, index) {
+   match += el + EQ_DELM + values.split(KEY_DELM)[index] + KEY_DELM;
+  });
+
+  return match.slice(0, -1);
+}
+
+function fill_in_matchers(){
+  $('.matchers').each(function () {
+    match = $(this).find('.match').val();
+    matcher_key = $(this).find('.matcher_key');
+    matcher_value = $(this).find('.matcher_value');
+    order = $(this).closest('.matcher-parent').find('#order').val().split('\n');
+
+    $(matcher_key).empty();
+    $(matcher_key).append("<option></option>");
+    $(order).each(function (index, value) {
+      $(matcher_key).append($("<option>", {value: value, html: value}));
+    });
+    if (match) {
+      key_value = match_to_key_value(match);
+      $(matcher_key).find("option[value='" + key_value[0] + "']").attr('selected', 'selected');
+      $(matcher_value).val(key_value[1]);
+    }
+  });
+}
+
+function build_match() {
+  $('.matchers').each(function () {
+    match = $(this).find('.match');
+    matcher_key = $(this).find('.matcher_key');
+    matcher_value = $(this).find('.matcher_value');
+    match.val(key_value_to_match(matcher_key.val(), matcher_value.val()));
+  });
+}
+

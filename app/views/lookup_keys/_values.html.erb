@@ -1,0 +1,18 @@
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th class='col-md-6'><%= _('Attribute Type') %> <span class="help-inline"><%= popover("", _("Matcher is a combination of an attribute and its value, if they match, the value below would be provided.<br> You may use any attribute foreman knows about, such as facts etc for example: <code> domain = example.com </code> or <code> is_virtual = true</code>"),
+                                                                :title => _("Explain matchers")).html_safe %></span></th>
+    <th class='col-md-3'><%= _('Value') %></th>
+    <th class='col-md-3'><%= _('Use Puppet Default') %><span class="help-inline"><%= use_puppet_default_help() %></span></th>
+  </tr>
+  </thead>
+</table>
+
+<%= new_child_fields_template(f, :lookup_values, { :partial => "lookup_keys/value", :form_builder_attrs => { :is_param => is_param } }) %>
+<%= f.fields_for :lookup_values do |lookup_values| %>
+    <%= render 'lookup_keys/value', :f => lookup_values, :is_param => is_param %>
+<% end %>
+<%= add_child_link '+ ' + _("Add Matcher-Value"), :lookup_values, { :title => _('add a new matcher-value pair') } %>
+
+

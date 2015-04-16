@@ -1,12 +1,40 @@
-<div class="fields">
-  <%= text_f f, :match, :size => "col-md-8",
-    :help_block => popover(_("Explain matchers"), _("Matcher is a combination of an attribute and its value, if they match, the value below would be provided.<br> You may use any attribute foreman knows about, such as facts etc for example: <code> domain = example.com </code> or <code> is_virtual = true</code>"),
-                           :title => _("Matcher"))
-  %>
-  <%= checkbox_f(f, :use_puppet_default, :label => _('Use Puppet default'), :size => "col-md-8",
-                    :help_block => use_puppet_default_help,
-                    :onchange=>'toggleUsePuppetDefaultValue(this, "value")') if is_param %>
-  <%= textarea_f f, :value, :rows => :auto, :value => f.object.value_before_type_cast, :size => "col-md-8",
-                    :disabled => f.object.use_puppet_default,
-                    :help_inline => remove_child_link(icon_text("remove"), f, {:title => _('remove value')}) %>
+<div class="fields matchers">
+
+  <table class="row form-group <%= 'has-error' if f.object.errors.any? %>">
+    <tbody>
+    <tr>
+      <td class="col-md-1">
+        <%= f.hidden_field :match, :class => 'match' %>
+        <%= select_tag '', nil, :class => 'matcher_key' %>
+      </td>
+      <td class="col-md-3">
+        <%= text_field_tag '', nil, :class => 'matcher_value' %>
+      </td>
+      <td class="col-md-4">
+        <%= f.text_area :value, :rows => line_count(f, :value), :class => 'form-control', :'data-property' => 'value',
+                        :disabled => f.object.use_puppet_default,
+                        :placeholder => _("Value") %>
+      </td>
+      <td class="col-md-1">
+        <%= f.check_box :use_puppet_default, :'data-property' => 'use_puppet_default',
+                        :disabled => (not is_param),
+                        :onchange => 'toggleUsePuppetDefaultValue(this, "value")' %>
+      </td>
+      <td class="col-md-1">
+          <span class="help-block">
+            <%= link_to_remove_fields('', f) %>
+          </span>
+      </td>
+    </tr>
+    <% if f.object.errors.any? %>
+        <tr>
+          <td colspan="5">
+        <span class="help-block">
+          <%= f.object.errors.full_messages.to_sentence %>
+        </span>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 </div>
