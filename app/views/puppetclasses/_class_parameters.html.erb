@@ -1,18 +1,26 @@
-<% lookup_keys = overridable_lookup_keys(puppetclass, obj) %>
-<% value_hash  = Classification::ClassParam.new(:host=>obj).inherited_values if obj.class.model_name == "Host" %>
-<% lookup_keys.each_with_index do |key,i| %>
-    <tr id="puppetclass_<%= puppetclass.id %>_params[<%= key.id %>]">
-      <%= content_tag :td, (i == 0 ? {:rowspan => lookup_keys.size} : {:class => 'hide'}) do
-        # In order to use the class .hide-first-col, we must have an extra, invisible cell.
-        # Plus, we make the class name available from javascript without having to look at any previous row.
-        content_tag :span, puppetclass.name, :'data-property' => 'class'
-      end %>
-      <td>
-        <%= content_tag :span, key.key, :class => "#{"override-param" if key.overridden?(obj)}", :'data-property' => 'name' %></td>
-      <td><%= obj.class.model_name == "Host" ? host_key_with_diagnostic(obj, value_hash, key) : hostgroup_key_with_diagnostic(obj, key)%></td>
-      <td>
-          <%= link_to_function(_("override"), "override_class_param(this)", :title => _("Override this value"),
-                               :'data-tag' => 'override', :class =>"btn btn-default") if authorized_via_my_scope("host_editing", "create_params") && !key.overridden?(obj) %>
-      </td>
+<div id='<%= puppetclass.to_s.gsub(':', '_') + '_' + puppetclass.id.to_s %>' class='tab-pane fields'>
+  <% lookup_keys = overridable_lookup_keys(puppetclass, obj) %>
+  <% value_hash = Classification::ClassParam.new(:host => obj).inherited_values if obj.class.model_name == "Host" %>
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th class='col-md-2'><%= _('Name') %></th>
+      <th class='col-md-7'><%= _('Value') %></th>
+      <th><%= _('Actions') %></th>
     </tr>
-<% end %>
+    </thead>
+    <tbody>
+    <% lookup_keys.each_with_index do |key, i| %>
+        <tr>
+          <td class='col-md-2'>
+            <%= content_tag :span, key.key, :class => "#{"override-param" if key.overridden?(obj)}", :'data-property' => 'name' %></td>
+          <td class='col-md-7'><%= obj.class.model_name == "Host" ? host_key_with_diagnostic(obj, value_hash, key) : hostgroup_key_with_diagnostic(obj, key) %></td>
+          <td>
+            <%= link_to_function(_("override"), "override_class_param(this)", :title => _("Override this value"),
+                                 :'data-tag' => 'override', :class => "btn btn-default") if authorized_via_my_scope("host_editing", "create_params") && !key.overridden?(obj) %>
+          </td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

@@ -156,7 +156,7 @@ function mark_params_override(){
     $('#inherited_parameters').find('[id^=name_]').each(function(){
       if (param_name.val() == $(this).text()){
         $(this).addClass('override-param');
-        $(this).closest('tr').find('textarea').addClass('override-param')
+        $(this).closest('tr').find('textarea').addClass('override-param');
         $(this).closest('tr').find('[data-tag=override]').hide();
       }
     })

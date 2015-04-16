@@ -97,7 +97,7 @@ a {
 // help-inline is not defined in Bootstrap3
 .help-inline{
   margin-top: 0;
-  line-height: 2.428571;
+  color: #737373;
 }
 
 .well {
@@ -218,3 +218,7 @@ body.modal-open {
   color: black;
 }
 // eof form-control-feedback
+
+legend {
+  margin-bottom: 10px;
+}

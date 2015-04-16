@@ -1,14 +1,16 @@
-<table class="table table-condensed" id="inherited_puppetclasses_parameters">
-  <thead>
-    <tr>
-      <th class='col-md-3'><%= _('Puppet class') %></th>
-      <th class='col-md-2'><%= _('Name') %></th>
-      <th class='col-md-6'><%= _('Value') %></th>
-      <th><%= _('Actions') %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render :partial => "puppetclasses/class_parameters", :collection => interesting_klasses(obj), :as => :puppetclass,
-             :locals => { :obj => obj } %>
-  </tbody>
-</table>
+<% @interesting_klasses = interesting_klasses(obj) %>
+<div class="smart-var-left col-md-2">
+  <ul class="nav nav-pills nav-stacked smart-var-tabs" data-tabs="pills">
+    <% @interesting_klasses.each do |klass| %>
+        <li>
+          <a data-toggle="tab" id="pill_<%= klass.to_s.gsub(':', '_') + '_' + klass.id.to_s %>"
+             href="#<%= klass.to_s.gsub(':', '_') + '_' + klass.id.to_s %>"><%= klass.name %></a>
+        </li>
+    <% end %>
+  </ul>
+</div>
+<div class="tab-content col-md-9 stacked-content">
+  <% @interesting_klasses.each do |klass| %>
+      <%= render :partial => "puppetclasses/class_parameters", :locals => { :obj => obj, :puppetclass => klass } %>
+  <% end %>
+</div>

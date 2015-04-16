@@ -384,6 +384,11 @@ function override_param(item){
 }
 
 function override_class_param(item){
+  //param = $(item).closest('tr');
+  //row_index = param[0].rowIndex;
+  $(item).closest('table').find("tr:eq(#{row_index})").after('<tr><td>bka</td></tr>');
+
+
   var param = $(item).closest('tr[id^="puppetclass_"][id*="_params\\["][id$="\\]"]');
   var id = param.attr('id').replace(/puppetclass_\d+_params\[(\d+)\]/, '$1')
   var c = param.find('[data-property=class]').text();
@@ -391,7 +396,7 @@ function override_class_param(item){
   var v = param.find('[data-property=value]').val();
   var t = param.find('[data-property=type]').text();
 
-  $('#puppetclasses_parameters').find('.btn-success').click();
+  //$('#puppetclasses_parameters').find('.btn-success').click();
   var new_param = param.closest('.tab-pane').find('[id*=_lookup_values]:visible').last().parents('.form-group');
   new_param.find('[data-property=lookup_key_id]').val(id);
   new_param.find('[data-property=class]').val(c);

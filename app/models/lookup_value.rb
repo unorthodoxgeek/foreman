@@ -13,7 +13,7 @@ class LookupValue < ActiveRecord::Base
   before_validation :validate_and_cast_value
   validate :validate_list, :validate_regexp, :ensure_fqdn_exists, :ensure_hostgroup_exists
 
-  attr_accessor :host_or_hostgroup
+  attr_accessor :host_or_hostgroup, :matcher_key, :matcher_value
 
   serialize :value
   attr_name :match
