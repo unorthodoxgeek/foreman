@@ -486,8 +486,8 @@ class HostTest < ActiveSupport::TestCase
     test "should save if root password is undefined when the host is managed and in build mode" do
       Setting[:root_pass] = ''
       host = Host.new :name => "myfullhost", :managed => true, :build => false
-      refute host.valid?
-      assert host.errors[:root_pass].present?
+      host.valid?
+      refute host.errors[:root_pass].present?
     end
 
     test "should save if root password is undefined when the compute resource is image capable and in build mode" do
@@ -500,7 +500,7 @@ class HostTest < ActiveSupport::TestCase
       Setting[:root_pass] = ''
       host = Host.new :name => "myfullhost", :managed => true, :build => true
       refute host.valid?
-      assert_present host.errors[:root_pass]
+      assert host.errors[:root_pass].present?
     end
 
     test "should not save if neither ptable or disk are defined when the host is managed" do

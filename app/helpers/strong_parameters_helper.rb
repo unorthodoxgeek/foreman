@@ -71,7 +71,7 @@ module StrongParametersHelper
 
   def permitted_usergroup_attributes
     permitted_attributes.usergroup_attributes +
-        [:external_usergroups_attributes => [:name, :auth_source_id] ]
+        [:external_usergroups_attributes => [:name, :auth_source_id, :_destroy] ]
   end
 
   def vm_attributes

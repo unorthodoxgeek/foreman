@@ -349,14 +349,15 @@ class NicTest < ActiveSupport::TestCase
       class DisallowedTestNic < Nic::Base
       end
 
-      Nic::Base.allowed_types.clear
       Nic::Base.register_type(DefaultTestNic)
       Nic::Base.register_type(HumanizedTestNic)
     end
 
     test "base registers allowed nic types" do
       expected_types = [DefaultTestNic, HumanizedTestNic]
-      assert_equal expected_types.map(&:name), Nic::Base.allowed_types.map(&:name)
+      expected_types.map(&:name).each do |type|
+        assert Nic::Base.allowed_types.map(&:name).include? type
+      end
     end
 
     test "type_by_name returns nil for an unknown name" do

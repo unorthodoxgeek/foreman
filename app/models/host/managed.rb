@@ -808,6 +808,22 @@ class Host::Managed < Host::Base
     @old = super { |clone| clone.interfaces = self.interfaces.map {|i| setup_object_clone(i) } }
   end
 
+  # converts a name into ip address using DNS.
+  # if we are managing DNS, we can query the correct DNS server
+  # otherwise, use normal systems dns settings to resolv
+  def to_ip_address(name_or_ip)
+    return name_or_ip if name_or_ip =~ Net::Validations::IP_REGEXP
+    if dns_ptr_record
+      lookup = dns_ptr_record.dns_lookup(name_or_ip)
+      return lookup.ip unless lookup.nil?
+    end
+    # fall back to normal dns resolution
+    domain.resolver.getaddress(name_or_ip).to_s
+  rescue => e
+    logger.warn "Unable to find IP address for '#{name_or_ip}': #{e}"
+    raise ::Foreman::WrappedException.new(e, N_("Unable to find IP address for '%s'"), name_or_ip)
+  end
+
   private
 
   # validate uniqueness can't prevent saving two interfaces that has same DNS name
@@ -872,22 +888,6 @@ class Host::Managed < Host::Base
   # puppet report status table column name
   def self.report_status
     "puppet_status"
-  end
-
-  # converts a name into ip address using DNS.
-  # if we are managing DNS, we can query the correct DNS server
-  # otherwise, use normal systems dns settings to resolv
-  def to_ip_address(name_or_ip)
-    return name_or_ip if name_or_ip =~ Net::Validations::IP_REGEXP
-    if dns_ptr_record
-      lookup = dns_ptr_record.dns_lookup(name_or_ip)
-      return lookup.ip unless lookup.nil?
-    end
-    # fall back to normal dns resolution
-    domain.resolver.getaddress(name_or_ip).to_s
-  rescue => e
-    logger.warn "Unable to find IP address for '#{name_or_ip}': #{e}"
-    raise ::Foreman::WrappedException.new(e, N_("Unable to find IP address for '%s'"), name_or_ip)
   end
 
   def set_default_user
