@@ -362,7 +362,7 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   def check_frozen_change(attr_name, value)
-    assert Setting.find_or_create_by(:name => "foo", :default => 5, :description => "test foo")
+    assert Setting.find_or_create_by(:name => "foo", :default => "5", :description => "test foo")
     setting = Setting.find_by_name("foo")
 
     setting.send("#{attr_name}=", value)
@@ -371,7 +371,7 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   def check_zero_value_not_allowed_for(setting_name)
-    setting = Setting.find_or_create_by(:name => setting_name, :value => 0, :default => 30)
+    setting = Setting.find_or_create_by(:name => setting_name, :value => "0", :default => "30")
     setting.value = 0
 
     refute_valid setting, :value, "must be greater than 0"
@@ -381,7 +381,8 @@ class SettingTest < ActiveSupport::TestCase
   end
 
   def check_length_must_be_under_8(setting_name)
-    setting = Setting.find_or_create_by(:name => setting_name, :default => 30)
+    setting = Setting.find_or_create_by(:name => setting_name, :default => "30")
+    setting.settings_type = "integer"
     setting.value = 123456789
 
     refute_valid setting, :value, /is too long \(maximum is 8 characters\)/
