@@ -81,7 +81,7 @@ module LookupKeysHelper
     content_tag :div, :class => ['form-group', 'condensed'] do
       row_count = original_value.to_s.lines.count rescue 1
       text_area_tag("value_#{key.key}", original_value, :rows => row_count == 0 ? 1 : row_count,
-                    :class => ['col-md-5'], :'data-property' => 'value', :disabled => true) +
+                    :class => ['col-md-5', "value"], :'data-property' => 'value', :disabled => true) +
       content_tag(:span, :class => "help-block") { diagnostic_helper }
     end
   end
@@ -104,7 +104,7 @@ module LookupKeysHelper
       end
     end
 
-    text_area_class = ['col-md-5']
+    text_area_class = ['col-md-5', "value"]
     text_area_class << "override-param" if key.overridden?(host)
     content_tag :div, :class => ['form-group', 'condensed'] + diagnostic_class do
       row_count = original_value.to_s.lines.count rescue 1

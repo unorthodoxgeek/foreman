@@ -1,4 +1,5 @@
 <% @interesting_klasses = interesting_klasses(obj) %>
+<%# Interesting classes is our name for classes which the object has values for%>
 <div class="smart-var-left col-md-2">
   <ul class="nav nav-pills nav-stacked smart-var-tabs" data-tabs="pills">
     <% @interesting_klasses.each do |klass| %>
@@ -9,7 +10,9 @@
     <% end %>
   </ul>
 </div>
+
 <div class="tab-content col-md-9 stacked-content">
+  <%# This is the classes on the big window on the right %>
   <% @interesting_klasses.each do |klass| %>
       <%= render :partial => "puppetclasses/class_parameters", :locals => { :obj => obj, :puppetclass => klass } %>
   <% end %>

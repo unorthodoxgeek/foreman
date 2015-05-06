@@ -36,3 +36,30 @@
     }
   }
 }
+
+.lookup_key_row {
+  .overridden_message {
+    display: none;
+  }
+  &.overridden {
+    span {
+      text-decoration: line-through
+    }
+    background: #ddd;
+    text-color: #333;
+    .override_button {
+      display: none;
+    }
+    .overridden_message {
+      display: inline;
+      text-decoration: none;
+    }
+  }
+}
+
+.lookup_key_override_row {
+  display: none;
+  &.visible {
+    display: table-row;
+  }
+}
