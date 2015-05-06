@@ -2,6 +2,56 @@ $(document).on('ContentLoad', function(){onHostEditLoad()});
 $(document).on('AddedClass', function(event, link){load_puppet_class_parameters(link)});
 $(document).on('click', '#params-tab', function() { resizeTextareas($('#params')); });
 
+LookupValueController = function(item) {
+  var self = this; //because JS' this confuses me
+  var element = item,
+  id = element.data("lookupKeyId"),
+  name = element.find(".lookup_key_name").html(),
+  value = element.find(".value").val(),
+  overrideTR = $("#lookup_value_for_"+id),
+  destroyer = overrideTR.find(".destroyer"),
+  hiddenToggle = overrideTR.find(".hidden_value input"),
+  overridingField = overrideTR.find(".overriding-value");
+
+  addEventListeners = function() {
+    element.find(".override_button").click(override);
+    overrideTR.find(".remove_override_button").click(removeOverride);
+    hiddenToggle.change(toggleHidden);
+  }
+
+  override = function() {
+    //create the overridden field
+    element.addClass("overridden");
+    overrideTR.addClass("visible");
+    destroyer.val("false");
+    return false;
+  }
+
+  removeOverride = function() {
+    // remove/hide the overridden field
+    element.removeClass("overridden");
+    overrideTR.removeClass("visible");
+    destroyer.val("true");
+    return false;
+  }
+
+  toggleHidden = function(){
+    var field = overrideTR.find(".overriding-value");
+    var textbox = $("<input type='password' class='overriding-value col-md-5' name='"+field.attr("name")+"'/>");
+    var textarea = $("<textarea rows='1' class='overriding-value col-md-5' name='"+field.attr("name")+"'></textarea>");
+    if (this.checked) {
+      textbox.val(field.val());
+      field.replaceWith(textbox);
+    } else {
+      textarea.val(field.val());
+      field.replaceWith(textarea);
+    }
+    return true;
+  }
+
+  addEventListeners();
+}
+
 function update_nics(success_callback) {
   var data = $('form').serialize().replace('method=put', 'method=post');
   $('#network').html(spinner_placeholder(__('Loading interfaces information ...')));
@@ -380,29 +430,6 @@ function override_param(item){
   var new_param = param.closest('.tab-pane').find('td.col-md-6 [id*=host_host_parameters]:visible').parent().parent().last();
   new_param.find('[id$=_name]').val(n);
   new_param.find('td.col-md-6 [id$=_value]').val(v == param_value.data('hidden-value') ? '' : v);
-  mark_params_override();
-}
-
-function override_class_param(item){
-  //param = $(item).closest('tr');
-  //row_index = param[0].rowIndex;
-  $(item).closest('table').find("tr:eq(#{row_index})").after('<tr><td>bka</td></tr>');
-
-
-  var param = $(item).closest('tr[id^="puppetclass_"][id*="_params\\["][id$="\\]"]');
-  var id = param.attr('id').replace(/puppetclass_\d+_params\[(\d+)\]/, '$1')
-  var c = param.find('[data-property=class]').text();
-  var n = param.find('[data-property=name]').text();
-  var v = param.find('[data-property=value]').val();
-  var t = param.find('[data-property=type]').text();
-
-  //$('#puppetclasses_parameters').find('.btn-success').click();
-  var new_param = param.closest('.tab-pane').find('[id*=_lookup_values]:visible').last().parents('.form-group');
-  new_param.find('[data-property=lookup_key_id]').val(id);
-  new_param.find('[data-property=class]').val(c);
-  new_param.find('[data-property=name]').val(n);
-  new_param.find('[data-property=value]').val(v);
-  new_param.find('[data-property=type]').val(t);
   mark_params_override();
 }
 
