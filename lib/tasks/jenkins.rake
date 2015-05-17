@@ -1,9 +1,9 @@
 begin
-  #require "ci/reporter/rake/minitest"
+  require "ci/reporter/rake/minitest"
   namespace :jenkins do
     task :unit do
       system "bundle exec rake db:drop db:create db:migrate RAILS_ENV=test"
-      system "rake test RAILS_ENV=test"
+      system "rake jenkins:setup:minitest test RAILS_ENV=test"
       exit($?.exitstatus)
     end
 
@@ -46,4 +46,3 @@ begin
 rescue LoadError
   # ci/reporter/rake/rspec not present, skipping this definition
 end
-
