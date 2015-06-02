@@ -3,7 +3,7 @@
 <div class="smart-var-left col-md-2">
   <ul class="nav nav-pills nav-stacked smart-var-tabs" data-tabs="pills">
     <% @interesting_klasses.each do |klass| %>
-        <li>
+        <li class="<%= "active" if @interesting_klasses.first == klass%>">
           <a data-toggle="tab" id="pill_<%= klass.to_s.gsub(':', '_') + '_' + klass.id.to_s %>"
              href="#<%= klass.to_s.gsub(':', '_') + '_' + klass.id.to_s %>"><%= klass.name %></a>
         </li>
@@ -14,6 +14,12 @@
 <div class="tab-content col-md-9 stacked-content">
   <%# This is the classes on the big window on the right %>
   <% @interesting_klasses.each do |klass| %>
-      <%= render :partial => "puppetclasses/class_parameters", :locals => { :obj => obj, :puppetclass => klass } %>
+      <%= render :partial => "puppetclasses/class_parameters", :locals => { :obj => obj, :puppetclass => klass, :active =>  @interesting_klasses.first == klass } %>
   <% end %>
 </div>
+
+<script type="text/javascript">
+$(".lookup_key_row").each(function(i, row){
+  new LookupValueController($(row));
+});
+</script>

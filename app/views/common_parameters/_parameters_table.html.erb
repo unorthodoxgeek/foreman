@@ -1,12 +1,12 @@
 <div class="tab-pane" id="params">
   <div class="tab-content">
-    <ul class="nav nav-tabs" data-tabs="tabs">
-      <li class="active"><a href="#puppet_parameters" data-toggle="tab"><%= _('Puppet Parameters') %></a></li>
+    <ul class="nav nav-pills" data-tabs="tabs">
+      <li class="active"><a href="#puppet_parameters" data-toggle="tab"><%= _('Class Parameters') %></a></li>
       <li><a href="#global_parameters" data-toggle="tab"><%= _('Global Parameters') %></a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="puppet_parameters">
-        <h4><%= _('Puppet classes Parameters') %></h4>
+        <h4><%= _('Class Parameters') %></h4>
 
         <p></p>
         <%= render "puppetclasses/classes_parameters", { :obj => obj } %>
@@ -24,6 +24,4 @@
       </div>
     </div>
   </div>
-
-
 </div>

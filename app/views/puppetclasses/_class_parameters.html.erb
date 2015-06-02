@@ -1,4 +1,4 @@
-<div id='<%= puppetclass.to_s.gsub(':', '_') + '_' + puppetclass.id.to_s %>' class='tab-pane fields'>
+<div id='<%= puppetclass.to_s.gsub(':', '_') + '_' + puppetclass.id.to_s %>' class='tab-pane fields <%="active" if active%>'>
   <% lookup_keys = overridable_lookup_keys(puppetclass, obj) %>
   <% value_hash = Classification::ClassParam.new(:host => obj).inherited_values if obj.class.model_name == "Host" %>
   <table class="table table-condensed">
@@ -29,12 +29,17 @@
               <%= hidden_field_tag "host[lookup_values_attributes][#{key.id}][lookup_key_id]", key.id %>
               <%= hidden_field_tag("host[lookup_values_attributes][#{key.id}][id]", value.id) if value.present? %>
               <%= hidden_field_tag "host[lookup_values_attributes][#{key.id}][_destroy]", value.blank?, :class => "destroyer" %>
-              <%= text_area_tag("host[lookup_values_attributes][#{key.id}][value]", value.try(:value),
+              <% if value.try(:hidden?) %>
+                <%= password_field_tag "host[lookup_values_attributes][#{key.id}][value]", value.try(:value), :class => "overriding-value col-md-5"%>
+              <% else %>
+                <%= text_area_tag("host[lookup_values_attributes][#{key.id}][value]", value.try(:value),
                             :class => "overriding-value col-md-5",
                             :rows => 1,
                             :placeholder => _("Value")) %>
+              <% end %>
               <label class="hidden_value">
-                <%= check_box_tag "host[lookup_values_attributes][#{key.id}][hidden]" %>
+                <%= hidden_field_tag "host[lookup_values_attributes][#{key.id}][hidden]", false %>
+                <%= check_box_tag "host[lookup_values_attributes][#{key.id}][hidden]", true, value.try(:hidden?) %>
                 <%=_("Hidden")%>
               </label>
 
@@ -52,9 +57,3 @@
     </tbody>
   </table>
 </div>
-
-<script type="text/javascript">
-$(".lookup_key_row").each(function(i, row){
-  new LookupValueController($(row));
-});
-</script>
