@@ -12,17 +12,17 @@ one:
 two:
   puppetclass: one
   environment: production
-  lookup_key: complex
+  puppetclass_lookup_key: complex
 
 three:
   puppetclass: two
   environment: production
-  lookup_key: five
+  puppetclass_lookup_key: five
 
 four:
   puppetclass: four
   environment: production
-  lookup_key: five_same_same
+  puppetclass_lookup_key: five_same_same
 
 five:
   puppetclass: three

@@ -5,7 +5,7 @@ FactoryGirl.define do
 
   factory :environment_class
 
-  factory :lookup_key do
+  factory :puppetclass_lookup_key do
     sequence(:key) {|n| "param#{n}" }
 
     transient do
@@ -73,7 +73,7 @@ FactoryGirl.define do
       after(:create) do |pc,evaluator|
         evaluator.parameter_count.times do
           evaluator.environments.each do |env|
-            lkey = FactoryGirl.create :lookup_key, :is_param => true
+            lkey = FactoryGirl.create :puppetclass_lookup_key, :is_param => true
             FactoryGirl.create :environment_class, :puppetclass_id => pc.id, :environment_id => env.id, :lookup_key_id => lkey.id
           end
         end
