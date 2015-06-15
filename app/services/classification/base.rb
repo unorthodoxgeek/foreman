@@ -29,7 +29,7 @@ module Classification
     def possible_value_orders
       class_parameters.select do |key|
         # take only keys with actual values
-        key.lookup_values_count > 0 # we use counter cache, so its safe to make that query
+        key.lookup_values.count > 0 # we use counter cache, so its safe to make that query
       end.map(&:path_elements).flatten(1).uniq
     end
 

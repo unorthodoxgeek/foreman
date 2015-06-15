@@ -5,7 +5,6 @@ class LookupKeysController < ApplicationController
 
   def index
     @lookup_keys = resource_base.search_for(params[:search], :order => params[:order])
-                                .includes(:param_classes)
                                 .paginate(:page => params[:page])
     @puppetclass_authorizer = Authorizer.new(User.current, :collection => @lookup_keys.map(&:puppetclass_id).compact.uniq)
   end
@@ -14,7 +13,7 @@ class LookupKeysController < ApplicationController
   end
 
   def update
-    if @lookup_key.update_attributes(params[:lookup_key])
+    if resource.update_attributes(params[resource_name])
       process_success
     else
       process_error
@@ -22,7 +21,7 @@ class LookupKeysController < ApplicationController
   end
 
   def destroy
-    if @lookup_key.destroy
+    if resource.destroy
       process_success
     else
       process_error
@@ -33,5 +32,9 @@ class LookupKeysController < ApplicationController
 
   def controller_permission
     'external_variables'
+  end
+
+  def resource
+    instance_variable_get("@#{resource_name}")
   end
 end

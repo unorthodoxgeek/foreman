@@ -1,0 +1,2 @@
+class VariableLookupKeysController < LookupKeysController
+end
