@@ -38,7 +38,7 @@ class LookupKeyTest < ActiveSupport::TestCase
     puppetclass = puppetclasses(:one)
 
     as_admin do
-      key   = VariableLookupKey.create!(:key => "dns", :path => "domain\npuppetversion", :puppetclass => puppetclass,:override=>true)
+      key   = PuppetclassLookupKey.create!(:key => "dns", :path => "domain\npuppetversion", :puppetclass => puppetclass, :override=>true)
       value = LookupValue.create!(:value => "[1.2.3.4,2.3.4.5]", :match => "domain =  mydomain.net", :lookup_key => key)
       EnvironmentClass.create!(:puppetclass => puppetclass, :environment => environments(:production), :lookup_key => key)
     end
@@ -76,11 +76,11 @@ class LookupKeyTest < ActiveSupport::TestCase
     value2 = ""
     puppetclass = Puppetclass.first
     as_admin do
-      key    = VariableLookupKey.create!(:key => "dns", :path => "environment,hostgroup \n hostgroup", :puppetclass => puppetclass, :default_value => default, :override=>true)
+      key    = PuppetclassLookupKey.create!(:key => "dns", :path => "environment,hostgroup \n hostgroup", :puppetclass => puppetclass, :default_value => default, :override=>true)
       value1 = LookupValue.create!(:value => "v1", :match => "environment=testing,hostgroup=Common", :lookup_key => key)
       value2 = LookupValue.create!(:value => "v2", :match => "hostgroup=Unusual", :lookup_key => key)
 
-      VariableLookupKey.create!(:value => "v22", :match => "fqdn=#{@host2.fqdn}", :lookup_key => key)
+      LookupValue.create!(:value => "v22", :match => "fqdn=#{@host2.fqdn}", :lookup_key => key)
       EnvironmentClass.create!(:puppetclass => puppetclass, :environment => environments(:testing), :lookup_key => key)
       HostClass.create!(:host => @host1,:puppetclass=>puppetclass)
       HostClass.create!(:host => @host2,:puppetclass=>puppetclass)
@@ -133,11 +133,11 @@ class LookupKeyTest < ActiveSupport::TestCase
   end
 
   test "this is a smart variable?" do
-    assert lookup_keys(:two).is_smart_variable?
+    assert lookup_keys(:two).class == VariableLookupKey
   end
 
   test "this is a smart class parameter?" do
-    assert lookup_keys(:complex).is_smart_class_parameter?
+    assert lookup_keys(:complex).class == PuppetclassLookupKey
   end
 
   test "when changed, an audit entry should be added" do

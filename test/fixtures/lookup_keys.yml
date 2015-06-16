@@ -6,6 +6,7 @@ one:
   validator_type:
   default_value: 80
   is_param: true
+  type: PuppetclassLookupKey
 
 three:
   key: ssl
@@ -14,6 +15,7 @@ three:
   default_value: true
   override: true
   is_param: true
+  type: PuppetclassLookupKey
 
 complex:
   key: cluster
@@ -23,6 +25,7 @@ complex:
   override: true
   path: 'organization,location'
   is_param: true
+  type: PuppetclassLookupKey
 
 five:
   key: custom_class_param
@@ -32,6 +35,7 @@ five:
   path: 'organization,location'
   override: true
   is_param: true
+  type: PuppetclassLookupKey
 
 five_same_name:
   key: custom_class_param
@@ -41,6 +45,7 @@ five_same_name:
   path: 'organization,location'
   override: true
   is_param: true
+  type: PuppetclassLookupKey
 
 six:
   key: yaml_test
@@ -50,6 +55,7 @@ six:
   path: 'organization,location'
   override: true
   is_param: true
+  type: PuppetclassLookupKey
 
 seven:
   key: array_test
@@ -59,3 +65,23 @@ seven:
   path: 'organization,location'
   override: true
   is_param: true
+  type: PuppetclassLookupKey
+
+two:
+  key: ssl_port
+  key_type: string
+  validator_type: list
+  validator_rule: '443,8443'
+  puppetclass: one
+  default_value: 443
+  type: VariableLookupKey
+
+four:
+  key: special_info
+  key_type: string
+  validator_rule:
+  default_value: 'secret'
+  override: true
+  puppetclass: two
+  path: 'organization,location'
+  type: VariableLookupKey

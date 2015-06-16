@@ -3,6 +3,8 @@ class PuppetclassLookupKey < LookupKey
   has_many :environment_classes, :dependent => :destroy
   has_many :environments, :through => :environment_classes, :uniq => true
   has_many :param_classes, :through => :environment_classes, :source => :puppetclass
+  belongs_to :puppetclass, :inverse_of => :lookup_keys
+
   def param_class
     param_classes.first
   end

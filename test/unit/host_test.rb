@@ -221,7 +221,7 @@ class HostTest < ActiveSupport::TestCase
 
   test "should be able to delete existing lookup value on update_attributes" do
     host = FactoryGirl.create(:host)
-    lookup_key = FactoryGirl.create(:lookup_key, :is_param)
+    lookup_key = FactoryGirl.create(:puppetclass_lookup_key, :is_param)
     lookup_value = FactoryGirl.create(:lookup_value, :lookup_key_id => lookup_key.id,
                                       :match => "fqdn=#{host.fqdn}", :value => '8080')
     host.reload
@@ -234,7 +234,7 @@ class HostTest < ActiveSupport::TestCase
 
   test "should be able to update lookup value on update_attributes" do
     host = FactoryGirl.create(:host)
-    lookup_key = FactoryGirl.create(:lookup_key, :is_param)
+    lookup_key = FactoryGirl.create(:puppetclass_lookup_key, :is_param)
     lookup_value = FactoryGirl.create(:lookup_value, :lookup_key_id => lookup_key.id,
                                       :match => "fqdn=#{host.fqdn}", :value => '8080')
     host.reload
@@ -1918,7 +1918,7 @@ class HostTest < ActiveSupport::TestCase
 
   test 'changing name with a fqdn should rename lookup_value matcher' do
     host = FactoryGirl.create(:host)
-    lookup_key = FactoryGirl.create(:lookup_key, :is_param)
+    lookup_key = FactoryGirl.create(:puppetclass_lookup_key, :is_param)
     lookup_value = FactoryGirl.create(:lookup_value, :lookup_key_id => lookup_key.id,
                                       :match => "fqdn=#{host.fqdn}", :value => '8080')
     host.reload
@@ -1931,7 +1931,7 @@ class HostTest < ActiveSupport::TestCase
 
   test 'changing only name should rename lookup_value matcher' do
     host = FactoryGirl.create(:host, :domain => FactoryGirl.create(:domain))
-    lookup_key = FactoryGirl.create(:lookup_key, :is_param)
+    lookup_key = FactoryGirl.create(:puppetclass_lookup_key, :is_param)
     lookup_value = FactoryGirl.create(:lookup_value, :lookup_key_id => lookup_key.id,
                                       :match => "fqdn=#{host.fqdn}", :value => '8080')
     host.reload
@@ -1944,7 +1944,7 @@ class HostTest < ActiveSupport::TestCase
 
   test 'changing host domain should rename lookup_value matcher' do
     host = FactoryGirl.create(:host)
-    lookup_key = FactoryGirl.create(:lookup_key, :is_param)
+    lookup_key = FactoryGirl.create(:puppetclass_lookup_key, :is_param)
     lookup_value = FactoryGirl.create(:lookup_value, :lookup_key_id => lookup_key.id,
                                       :match => "fqdn=#{host.fqdn}", :value => '8080')
     host.reload

@@ -57,6 +57,10 @@ class LookupKey < ActiveRecord::Base
     nil
   end
 
+  def audit_class
+    self
+  end
+
   def to_label
     "#{audit_class}::#{key}"
   end
