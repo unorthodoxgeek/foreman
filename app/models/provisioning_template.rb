@@ -7,8 +7,6 @@ class ProvisioningTemplate < Template
   audited :allow_mass_assignment => true
   self.auditing_enabled = !Foreman.in_rake?('db:migrate')
 
-  attr_accessible :template_kind, :template_kind_id, :template_combinations_attributes,
-                  :operatingsystems, :operatingsystem_ids, :vendor
   validates :name, :uniqueness => true
   validates :template_kind_id, :presence => true, :unless => Proc.new {|t| t.snippet }
 

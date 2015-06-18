@@ -31,8 +31,6 @@ class Ptable < Template
   scoped_search :on => :template, :complete_value => false, :rename => 'layout'
   scoped_search :on => :os_family, :rename => 'family', :complete_value => :true
 
-  attr_accessible :layout, :os_family
-
   alias_attribute :layout, :template
 
   # with proc support, default_scope can no longer be chained
