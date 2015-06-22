@@ -1,7 +1,6 @@
 class ProvisioningTemplate < Template
   include Authorizable
-  extend FriendlyId
-  friendly_id :name
+
   include Parameterizable::ByIdName
 
   audited :allow_mass_assignment => true
@@ -16,7 +15,7 @@ class ProvisioningTemplate < Template
   has_many :template_combinations, :dependent => :destroy
   belongs_to :template_kind, :validate => false
   accepts_nested_attributes_for :template_combinations, :allow_destroy => true, :reject_if => lambda {|tc| tc[:environment_id].blank? and tc[:hostgroup_id].blank? }
-  has_and_belongs_to_many :operatingsystems
+  has_and_belongs_to_many :operatingsystems, :join_table => :operatingsystems_provisioning_templates, :association_foreign_key => :operatingsystem_id, :foreign_key => :provisioning_template_id
   has_many :os_default_templates
   before_save :check_for_snippet_assoications
 
@@ -111,7 +110,7 @@ class ProvisioningTemplate < Template
       error_msg = _("No TFTP proxies defined, can't continue")
     end
 
-    if (default_template = ProvisioningTemplate.find_by_name("PXELinux global default")).nil?
+    if (default_template = ProvisioningTemplate.where(:name => "PXELinux global default").first).nil?
       error_msg = _("Could not find a Configuration Template with the name \"PXELinux global default\", please create one.")
     end
 

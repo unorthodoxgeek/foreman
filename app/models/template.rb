@@ -1,4 +1,6 @@
 class Template < ActiveRecord::Base
+  include Parameterizable::ByIdName
+
   validates_lengths_from_database
 
   validates :name, :presence => true
