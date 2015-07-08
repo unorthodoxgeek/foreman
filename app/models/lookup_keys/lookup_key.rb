@@ -15,18 +15,17 @@ class LookupKey < ActiveRecord::Base
 
   has_many :lookup_values, :dependent => :destroy, :inverse_of => :lookup_key
   accepts_nested_attributes_for :lookup_values,
-                                :reject_if => lambda { |a| a[:value].blank? && (a[:use_puppet_default].nil? || a[:use_puppet_default] == "0")},
+                                :reject_if => lambda { |a| a[:value].blank? },
                                 :allow_destroy => true
 
   before_validation :validate_and_cast_default_value
-  validates :key, :uniqueness => {:scope => :is_param }, :unless => Proc.new{|p| p.is_param?}
 
   validates :key, :presence => true
   validates :validator_type, :inclusion => { :in => VALIDATOR_TYPES, :message => N_("invalid")}, :allow_blank => true, :allow_nil => true
   validates :key_type, :inclusion => {:in => KEY_TYPES, :message => N_("invalid")}, :allow_blank => true, :allow_nil => true
   validate :validate_list, :validate_regexp
   validates_associated :lookup_values
-  validate :ensure_type, :disable_merge_overrides, :disable_avoid_duplicates
+  validate :disable_merge_overrides, :disable_avoid_duplicates
 
   before_save :sanitize_path
   attr_name :key
@@ -56,7 +55,6 @@ class LookupKey < ActiveRecord::Base
   def self.find_by_name(str)
     nil
   end
-
   def audit_class
     self
   end
@@ -252,12 +250,6 @@ class LookupKey < ActiveRecord::Base
 
   def cast_value_json(value)
     JSON.load value
-  end
-
-  def ensure_type
-    if puppetclass_id.present? and is_param?
-      self.errors.add(:base, _('Global variable or class Parameter, not both'))
-    end
   end
 
   def validate_regexp

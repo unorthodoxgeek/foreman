@@ -18,10 +18,6 @@ FactoryGirl.define do
       lkey.reload
     end
 
-    trait :is_param do
-      is_param true
-    end
-
     trait :with_override do
       override true
       default_value "default value"
