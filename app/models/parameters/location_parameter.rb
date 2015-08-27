@@ -3,6 +3,8 @@ class LocationParameter < Parameter
   audited :except => [:priority], :associated_with => :location, :allow_mass_assignment => true
   validates :name, :uniqueness => {:scope => :reference_id}
 
+  delegate :lookup_value_matcher, :to => :location
+
   private
 
   def enforce_permissions(operation)

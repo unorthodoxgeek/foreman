@@ -73,6 +73,10 @@ class Domain < ActiveRecord::Base
     ['name']
   end
 
+  def lookup_value_matcher
+    "domain=#{name}"
+  end
+
   # overwrite method in taxonomix, since domain is not direct association of host anymore
   def used_taxonomy_ids(type)
     return [] if new_record?

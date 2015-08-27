@@ -3,6 +3,8 @@ class HostParameter < Parameter
   audited :except => [:priority], :associated_with => :host, :allow_mass_assignment => true
   validates :name, :uniqueness => {:scope => :reference_id}
 
+  delegate :lookup_value_matcher, :to => :host
+
   def to_s
     "#{host.id ? host.name : "unassociated"}: #{name} = #{value}"
   end

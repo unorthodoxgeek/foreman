@@ -154,6 +154,10 @@ class Operatingsystem < ActiveRecord::Base
     fullname
   end
 
+  def lookup_value_matcher
+    "os=#{name}"
+  end
+
   def self.find_by_to_label(str)
     os = self.find_by_description(str)
     return os if os

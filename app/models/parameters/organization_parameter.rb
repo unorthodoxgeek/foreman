@@ -3,6 +3,8 @@ class OrganizationParameter < Parameter
   audited :except => [:priority], :associated_with => :organization, :allow_mass_assignment => true
   validates :name, :uniqueness => {:scope => :reference_id}
 
+  delegate :lookup_value_matcher, :to => :organization
+
   private
 
   def enforce_permissions(operation)

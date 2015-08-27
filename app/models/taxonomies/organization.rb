@@ -43,6 +43,8 @@ class Organization < Taxonomy
     "organization=#{title}"
   end
 
+  alias_method :lookup_value_matcher, :lookup_value_match
+
   def sti_name
     _("organization")
   end

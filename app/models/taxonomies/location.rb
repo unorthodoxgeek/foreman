@@ -43,6 +43,8 @@ class Location < Taxonomy
     "location=#{title}"
   end
 
+  alias_method :lookup_value_matcher, :lookup_value_match
+
   def sti_name
     _("location")
   end
