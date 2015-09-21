@@ -6,7 +6,6 @@ class HostClass < ActiveRecord::Base
   audited :associated_with => :host, :allow_mass_assignment => true
   belongs_to_host
   belongs_to :puppetclass
-  include AccessibleAttributes
 
 # FIGURE OUT WHY FactoryGirl.create(:host, :with_puppetclass) doesn't create HOST_ID
 # validates :host_id, :presence => true

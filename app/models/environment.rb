@@ -3,6 +3,8 @@ class Environment < ActiveRecord::Base
   include Authorizable
   include Parameterizable::ByIdName
 
+  attr_accessible :name, :location_ids, :organization_ids
+
   validates_lengths_from_database
   before_destroy EnsureNotUsedBy.new(:hosts, :hostgroups)
 
@@ -13,7 +15,6 @@ class Environment < ActiveRecord::Base
   has_many :trends, :as => :trendable, :class_name => "ForemanTrend"
   has_many :template_combinations, :dependent => :destroy
   has_many :provisioning_templates, :through => :template_combinations
-  include AccessibleAttributes
 
   validates :name, :uniqueness => true, :presence => true, :alphanumeric => true
 

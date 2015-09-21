@@ -6,6 +6,12 @@ class ComputeResource < ActiveRecord::Base
   include Parameterizable::ByIdName
   encrypts :password
 
+  attr_accessible :name, :provider, :description,
+      :url, :display_type, :set_console_password, :zone, :project,
+      :user, :password, :uuid, :ovirt_quota, :public_key,
+      :region, :server, :pubkey_hash, :tenant, :project, :email, :key_path,
+      :location_ids, :organization_ids
+
   class_attribute :supported_providers
   self.supported_providers = {
     'Libvirt'   => 'Foreman::Model::Libvirt',
@@ -37,7 +43,7 @@ class ComputeResource < ActiveRecord::Base
   before_validation :set_attributes_hash
   has_many :compute_attributes, :dependent => :destroy
   has_many :compute_profiles, :through => :compute_attributes
-  include AccessibleAttributes
+
   attr_accessible :provider, :set_console_password, :display_type
 
   # The DB may contain compute resource from disabled plugins - filter them out here
