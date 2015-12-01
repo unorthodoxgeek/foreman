@@ -64,7 +64,7 @@ class Host::Managed < Host::Base
   include HostCommon
   attr_accessible :build, :certname, :disk, :global_status,
     :installed_at,  :last_report, :otp, :provision_method, :uuid,
-    :compute_attributes,
+    :compute_attributes, :host_parameters_attributes,
     :compute_resource, :compute_resource_id, :compute_resource_name,
     :owner, :owner_id, :owner_name, :owner_type
 
